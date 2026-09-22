@@ -1,0 +1,15 @@
+{
+  "name": "trao-ai-interview-prep-kit",
+  "version": "1.0.0",
+  "description": "Full-Stack Engineering Assessment: The AI Interview Prep Kit",
+  "scripts": {
+    "evaluate": "cd backend && npm run evaluate",
+    "dev": "npm run dev --prefix backend & npm run dev --prefix frontend",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend",
+    "test": "npm test --prefix backend",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down"
+  },
+  "author": "",
+  "license": "ISC"
+}

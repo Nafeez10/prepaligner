@@ -1,0 +1,234 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-09-21T07:35:44.553Z",
+  "kits": [
+    {
+      "id": "case-01",
+      "status": "ok",
+      "kit": {
+        "source": {
+          "company": "example",
+          "company_url": "https://example.com",
+          "role": "Software Engineer",
+          "location": "Remote/Unspecified",
+          "jd_chars": 111,
+          "researched_at": "2026-09-21T07:35:44.445Z",
+          "pages_used": [
+            "https://example.com"
+          ]
+        },
+        "company_brief": {
+          "summary": "A company.",
+          "what_they_do": "Things.",
+          "sources": [
+            "https://example.com"
+          ]
+        },
+        "role": {
+          "title": "Software Engineer",
+          "seniority": "Mid",
+          "responsibilities": [
+            "Write code"
+          ],
+          "requirements": [
+            {
+              "id": "r_e11ea951-a168-41ee-b25f-583372512840",
+              "text": "React experience",
+              "kind": "technical",
+              "priority": "must"
+            }
+          ]
+        },
+        "questions": [
+          {
+            "id": "q_0f603efd-af7a-4a07-a348-fd9952b9eb40",
+            "requirement_ids": [
+              "r1"
+            ],
+            "category": "technical",
+            "prompt": "What is a React hook?",
+            "answer_outline": "Explain hooks.",
+            "difficulty": 2
+          },
+          {
+            "id": "q_553a3999-183b-496b-b13e-8e36c62a3677",
+            "requirement_ids": [
+              "r1"
+            ],
+            "category": "technical",
+            "prompt": "What is a React hook?",
+            "answer_outline": "Explain hooks.",
+            "difficulty": 2
+          },
+          {
+            "id": "q_079e65ac-a565-4e4a-8e6f-4968a6b487ee",
+            "requirement_ids": [
+              "r1"
+            ],
+            "category": "technical",
+            "prompt": "What is a React hook?",
+            "answer_outline": "Explain hooks.",
+            "difficulty": 2
+          }
+        ],
+        "flashcards": [
+          {
+            "id": "f_51f66265-f56d-425b-9b45-b8032882674c",
+            "front": "React Hook",
+            "back": "A function.",
+            "requirement_ids": [
+              "r1"
+            ]
+          }
+        ],
+        "schedule": {
+          "days_available": 5,
+          "days": [
+            {
+              "day": 1,
+              "focus": "Core Foundations & Deep Dive",
+              "question_ids": [
+                "q_0f603efd-af7a-4a07-a348-fd9952b9eb40"
+              ],
+              "minutes": 30
+            },
+            {
+              "day": 2,
+              "focus": "Technical & Domain Knowledge",
+              "question_ids": [
+                "q_553a3999-183b-496b-b13e-8e36c62a3677"
+              ],
+              "minutes": 30
+            },
+            {
+              "day": 3,
+              "focus": "Technical & Domain Knowledge",
+              "question_ids": [
+                "q_079e65ac-a565-4e4a-8e6f-4968a6b487ee"
+              ],
+              "minutes": 30
+            },
+            {
+              "day": 4,
+              "focus": "Review and Rest",
+              "question_ids": [],
+              "minutes": 15
+            },
+            {
+              "day": 5,
+              "focus": "Review and Rest",
+              "question_ids": [],
+              "minutes": 15
+            }
+          ]
+        },
+        "coverage": {
+          "uncovered_requirement_ids": [
+            "r_e11ea951-a168-41ee-b25f-583372512840"
+          ],
+          "passes": 3
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "case-02",
+      "status": "ok",
+      "kit": {
+        "source": {
+          "company": "the company",
+          "company_url": "http://invalid-url.local-xyz",
+          "role": "Software Engineer",
+          "location": "Remote/Unspecified",
+          "jd_chars": 25,
+          "researched_at": "2026-09-21T07:35:44.552Z",
+          "pages_used": []
+        },
+        "company_brief": {
+          "summary": "A company.",
+          "what_they_do": "Things.",
+          "sources": []
+        },
+        "role": {
+          "title": "Software Engineer",
+          "seniority": "Mid",
+          "responsibilities": [
+            "Write code"
+          ],
+          "requirements": [
+            {
+              "id": "r_974c715a-e56f-4e4c-b109-3b983430fc63",
+              "text": "React experience",
+              "kind": "technical",
+              "priority": "must"
+            }
+          ]
+        },
+        "questions": [
+          {
+            "id": "q_ea51c1da-e3ae-4811-a092-b48dd3a1e4db",
+            "requirement_ids": [
+              "r1"
+            ],
+            "category": "technical",
+            "prompt": "What is a React hook?",
+            "answer_outline": "Explain hooks.",
+            "difficulty": 2
+          },
+          {
+            "id": "q_fba9386d-545f-4f0a-acd2-82decb7642fc",
+            "requirement_ids": [
+              "r1"
+            ],
+            "category": "technical",
+            "prompt": "What is a React hook?",
+            "answer_outline": "Explain hooks.",
+            "difficulty": 2
+          },
+          {
+            "id": "q_369104be-1830-4645-8aa0-7399c758fdcf",
+            "requirement_ids": [
+              "r1"
+            ],
+            "category": "technical",
+            "prompt": "What is a React hook?",
+            "answer_outline": "Explain hooks.",
+            "difficulty": 2
+          }
+        ],
+        "flashcards": [
+          {
+            "id": "f_f3c696fe-74ab-4a49-965f-c7190219cf5d",
+            "front": "React Hook",
+            "back": "A function.",
+            "requirement_ids": [
+              "r1"
+            ]
+          }
+        ],
+        "schedule": {
+          "days_available": 1,
+          "days": [
+            {
+              "day": 1,
+              "focus": "Intensive Preparation",
+              "question_ids": [
+                "q_ea51c1da-e3ae-4811-a092-b48dd3a1e4db",
+                "q_fba9386d-545f-4f0a-acd2-82decb7642fc",
+                "q_369104be-1830-4645-8aa0-7399c758fdcf"
+              ],
+              "minutes": 90
+            }
+          ]
+        },
+        "coverage": {
+          "uncovered_requirement_ids": [
+            "r_974c715a-e56f-4e4c-b109-3b983430fc63"
+          ],
+          "passes": 3
+        }
+      },
+      "error": null
+    }
+  ]
+}
