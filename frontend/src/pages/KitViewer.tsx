@@ -122,16 +122,16 @@ const KitViewer = () => {
         </TabsList>
         
         <TabsContent value="brief" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <CompanyBriefTab kitData={kitData} />
+          <CompanyBriefTab kitData={kitData} regenerationStates={kit.regeneration_states} />
         </TabsContent>
         <TabsContent value="questions" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <QuestionsTab kitData={kitData} />
+          <QuestionsTab kitData={kitData} regenerationStates={kit.regeneration_states} />
         </TabsContent>
         <TabsContent value="flashcards" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <FlashcardsTab kitData={kitData} />
+          <FlashcardsTab kitData={kitData} regenerationStates={kit.regeneration_states} />
         </TabsContent>
         <TabsContent value="schedule" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <ScheduleTab kitData={kitData} />
+          <ScheduleTab kitData={kitData} regenerationStates={kit.regeneration_states} />
         </TabsContent>
       </Tabs>
 

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Button } from '@/components/ui/button';
-import { Brain, Code, Users, Plus } from 'lucide-react';
+import { Brain, Code, Users, Plus, Loader2 } from 'lucide-react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { ManagedQuestion } from '@/types/kit';
@@ -31,7 +31,8 @@ const CategoryColumn = ({ categoryId, items, onAdd, onUpdate, onDelete, onToggle
         </h2>
         <div className="flex gap-1">
           <Button variant="ghost" size="sm" onClick={() => onRegenerate(categoryId)} disabled={isRegenerating}>
-            <Brain className={`h-4 w-4 ${isRegenerating ? 'animate-pulse' : ''}`} />
+            {isRegenerating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Brain className="h-4 w-4 mr-1" />}
+            {isRegenerating ? "Regenerating..." : "Regenerate"}
           </Button>
           <Button variant="ghost" size="sm" onClick={() => onAdd(categoryId)} disabled={isRegenerating}>
             <Plus className="h-4 w-4 mr-1" /> Add

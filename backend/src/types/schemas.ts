@@ -118,3 +118,14 @@ export type ManagedKit = Omit<Kit, 'questions' | 'flashcards'> & {
   questions: ManagedQuestion[];
   flashcards: ManagedFlashcard[];
 };
+
+export type SectionState = 'idle' | 'generating' | 'failed';
+
+export interface RegenerationStates {
+  company_brief: SectionState;
+  schedule: SectionState;
+  flashcards: SectionState;
+  questions: {
+    category: Record<string, SectionState>;
+  };
+}

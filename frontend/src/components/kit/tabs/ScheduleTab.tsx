@@ -1,29 +1,34 @@
 import { CheckCircle2, Circle, Loader2 } from 'lucide-react';
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 import { KitsAPI, useKit } from '@/api/routes/KitsAPI';
+import RegenerateScheduleModal from '../modals/RegenerateScheduleModal';
 
 import { ManagedKit, ScheduleDay } from '@/types/kit';
+import { RegenerationStates } from '@/api/routes/KitsAPI/types';
 
 interface Props {
   kitData: ManagedKit;
+  regenerationStates?: RegenerationStates;
 }
 
-const ScheduleTab = ({ kitData }: Props) => {
+const ScheduleTab = ({ kitData, regenerationStates }: Props) => {
   const { id } = useParams<{ id: string }>();
-  const { mutate } = useKit(id);
-  const [isRegenerating, setIsRegenerating] = useState(false);
+  const { mutateStatus, setOptimisticGenerating } = useKit(id);
+  const isRegenerating = regenerationStates?.schedule === 'generating';
+  const currentDays = kitData?.schedule?.days_available || kitData?.schedule?.days?.length || 5;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleRegenerate = async () => {
+  const handleConfirmRegenerate = async (newDays: number) => {
+    setIsModalOpen(false);
     if (!id) return;
-    setIsRegenerating(true);
     try {
-      await KitsAPI.regenerateSection(id, 'schedule', {});
-      await mutate();
+      setOptimisticGenerating('schedule');
+      await KitsAPI.regenerateSection(id, 'schedule', { study_days: newDays });
+      await mutateStatus(); // Fetch real status
     } catch (e) {
       console.error('Failed to regenerate schedule', e);
-    } finally {
-      setIsRegenerating(false);
+      await mutateStatus(); // Revert on error
     }
   };
   if (!kitData || !kitData.schedule || !kitData.schedule.days) return null;
@@ -35,7 +40,7 @@ const ScheduleTab = ({ kitData }: Props) => {
           The schedule allocates topics based on your available study days.
         </div>
         <button 
-          onClick={handleRegenerate} 
+          onClick={() => setIsModalOpen(true)} 
           disabled={isRegenerating}
           className="text-sm bg-secondary hover:bg-secondary/80 text-secondary-foreground px-4 py-2 rounded transition-colors flex items-center gap-2"
         >
@@ -81,6 +86,14 @@ const ScheduleTab = ({ kitData }: Props) => {
           </div>
         ))}
       </div>
+      
+      <RegenerateScheduleModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        currentDays={currentDays}
+        onConfirm={handleConfirmRegenerate}
+        isRegenerating={isRegenerating}
+      />
     </div>
   );
 };

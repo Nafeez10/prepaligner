@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { ManagedKit } from '../types/schemas';
+import { ManagedKit, RegenerationStates } from '../types/schemas';
 
 export interface IKitDoc extends Document {
   userId: mongoose.Types.ObjectId;
@@ -12,6 +12,7 @@ export interface IKitDoc extends Document {
   role_name?: string;
   study_days?: number;
   raw_context?: string;
+  regeneration_states?: RegenerationStates;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,6 +35,7 @@ const KitSchema = new Schema({
   study_days: { type: Number },
   raw_context: { type: String },
   kitData: { type: Schema.Types.Mixed }, // Use Mixed for the heavily nested Appendix A schema
+  regeneration_states: { type: Schema.Types.Mixed },
 }, { timestamps: true });
 
 export const KitModel = mongoose.model<IKitDoc>('Kit', KitSchema);

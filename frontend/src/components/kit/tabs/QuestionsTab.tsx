@@ -19,13 +19,14 @@ import { CATEGORIES } from '@/constants/kitConstants';
 import CategoryColumn from '../builder/CategoryColumn';
 import AddQuestionModal from '../builder/AddQuestionModal';
 
-const QuestionsTab = ({ kitData }: { kitData: ManagedKit }) => {
+import { RegenerationStates } from '@/api/routes/KitsAPI/types';
+
+const QuestionsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, regenerationStates?: RegenerationStates }) => {
   const { id } = useParams<{ id: string }>();
-  const { mutate } = useKit(id);
+  const { mutate, mutateStatus, setOptimisticGenerating } = useKit(id);
   const { triggerSave, isSaving } = useDebounceSave(id, mutate);
   
   const [items, setItems] = useState<ManagedQuestion[]>([]);
-  const [regeneratingCategory, setRegeneratingCategory] = useState<string | null>(null);
   const [addModalCategory, setAddModalCategory] = useState<string | null>(null);
 
   useEffect(() => {
@@ -135,14 +136,13 @@ const QuestionsTab = ({ kitData }: { kitData: ManagedKit }) => {
 
   const handleRegenerateCategory = async (category: string) => {
     if (!id) return;
-    setRegeneratingCategory(category);
     try {
+      setOptimisticGenerating('category', category);
       await KitsAPI.regenerateSection(id, 'category', { category });
-      await mutate();
+      await mutateStatus(); // Fetch real status
     } catch (e) {
       console.error('Failed to regenerate category', e);
-    } finally {
-      setRegeneratingCategory(null);
+      await mutateStatus(); // Revert on error
     }
   };
 
@@ -171,7 +171,7 @@ const QuestionsTab = ({ kitData }: { kitData: ManagedKit }) => {
               onDelete={handleDelete}
               onTogglePin={handleTogglePin}
               onRegenerate={handleRegenerateCategory}
-              isRegenerating={regeneratingCategory === category}
+              isRegenerating={regenerationStates?.questions?.category?.[category] === 'generating'}
             />
           );
         })}

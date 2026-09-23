@@ -7,10 +7,13 @@ import Dashboard from './pages/Dashboard';
 import NewKit from './pages/NewKit';
 import KitViewer from './pages/KitViewer';
 import MockInterviewer from './pages/MockInterviewer';
+import { Toaster } from 'sonner';
 
 const App = () => {
   return (
-    <Routes>
+    <>
+      <Toaster position="top-right" richColors />
+      <Routes>
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -26,6 +29,7 @@ const App = () => {
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
+    </>
   );
 };
 

@@ -23,13 +23,15 @@ import { ManagedFlashcard, ManagedKit } from '@/types/kit';
 import SortableFlashcard from '../builder/SortableFlashcard';
 import AddFlashcardModal from '../builder/AddFlashcardModal';
 
-const FlashcardsTab = ({ kitData }: { kitData: ManagedKit }) => {
+import { RegenerationStates } from '@/api/routes/KitsAPI/types';
+
+const FlashcardsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, regenerationStates?: RegenerationStates }) => {
   const { id } = useParams<{ id: string }>();
-  const { mutate } = useKit(id);
+  const { mutate, mutateStatus, setOptimisticGenerating } = useKit(id);
   const { triggerSave, isSaving } = useDebounceSave(id, mutate);
 
   const [items, setItems] = useState<ManagedFlashcard[]>([]);
-  const [isRegenerating, setIsRegenerating] = useState(false);
+  const isRegenerating = regenerationStates?.flashcards === 'generating';
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
@@ -109,14 +111,13 @@ const FlashcardsTab = ({ kitData }: { kitData: ManagedKit }) => {
 
   const handleRegenerate = async () => {
     if (!id) return;
-    setIsRegenerating(true);
     try {
+      setOptimisticGenerating('flashcards');
       await KitsAPI.regenerateSection(id, 'flashcards', {});
-      await mutate();
+      await mutateStatus(); // Fetch real status
     } catch (e) {
       console.error('Failed to regenerate flashcards', e);
-    } finally {
-      setIsRegenerating(false);
+      await mutateStatus(); // Revert on error
     }
   };
 

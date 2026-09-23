@@ -85,12 +85,12 @@ export class KitController {
   static async getKitStatus(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user.userId;
-      const kit = await KitModel.findOne({ _id: req.params.id, userId }).select('status');
+      const kit = await KitModel.findOne({ _id: req.params.id, userId }).select('status regeneration_states');
       if (!kit) {
         res.status(404).json({ error: 'Kit not found' });
         return;
       }
-      res.json({ _id: kit._id, status: kit.status });
+      res.json({ _id: kit._id, status: kit.status, regeneration_states: kit.regeneration_states });
     } catch {
       res.status(500).json({ error: 'Failed to fetch kit status' });
     }
@@ -155,12 +155,19 @@ export class KitController {
         return;
       }
 
-      const updatedData = await KitService.regenerateSection(kit, section, payload);
+      const stateKey = section === 'category'
+        ? `regeneration_states.questions.category.${payload?.category}`
+        : `regeneration_states.${section}`;
 
-      await KitModel.findByIdAndUpdate(req.params.id, { kitData: updatedData });
-      res.json({ message: 'Section regenerated successfully', kitData: updatedData });
+      // Synchronously mark as generating so frontend polling kicks in instantly
+      await KitModel.findByIdAndUpdate(kit._id, { $set: { [stateKey]: 'generating' } });
+
+      // Fire and forget — run LLM in background
+      KitService.runSectionGeneration(kit, section, payload);
+
+      res.status(202).json({ message: 'Section regeneration started' });
     } catch {
-      res.status(500).json({ error: 'Failed to regenerate section' });
+      res.status(500).json({ error: 'Failed to start section regeneration' });
     }
   }
 }

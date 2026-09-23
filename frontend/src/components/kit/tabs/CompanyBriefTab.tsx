@@ -6,19 +6,21 @@ import { KitsAPI, useKit } from '@/api/routes/KitsAPI';
 import { useState, useEffect } from 'react';
 
 import { ManagedKit } from '@/types/kit';
+import { RegenerationStates } from '@/api/routes/KitsAPI/types';
 
 interface Props {
   kitData: ManagedKit;
+  regenerationStates?: RegenerationStates;
 }
 
-const CompanyBriefTab = ({ kitData }: Props) => {
+const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
   const { id } = useParams<{ id: string }>();
-  const { mutate } = useKit(id);
+  const { mutate, mutateStatus, setOptimisticGenerating } = useKit(id);
   const { triggerSave, isSaving } = useDebounceSave(id, mutate);
 
   const [summary, setSummary] = useState(kitData?.company_brief?.summary || '');
   const [whatTheyDo, setWhatTheyDo] = useState(kitData?.company_brief?.what_they_do || '');
-  const [isRegenerating, setIsRegenerating] = useState(false);
+  const isRegenerating = regenerationStates?.company_brief === 'generating';
 
   useEffect(() => {
     setSummary(kitData?.company_brief?.summary || '');
@@ -46,14 +48,13 @@ const CompanyBriefTab = ({ kitData }: Props) => {
 
   const handleRegenerate = async () => {
     if (!id) return;
-    setIsRegenerating(true);
     try {
+      setOptimisticGenerating('company_brief');
       await KitsAPI.regenerateSection(id, 'company_brief', {});
-      await mutate();
+      await mutateStatus(); // Fetch real status
     } catch (e) {
       console.error('Failed to regenerate company brief', e);
-    } finally {
-      setIsRegenerating(false);
+      await mutateStatus(); // Revert on error
     }
   };
 
