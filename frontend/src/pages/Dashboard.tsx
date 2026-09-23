@@ -47,7 +47,7 @@ const Dashboard = () => {
             <FilePlus2 className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-xl font-semibold mb-2">No kits generated yet</h3>
             <p className="text-muted-foreground mb-6 max-w-sm">
-              Paste a Job Description and a Company URL to let Trao AI build your personalized interview study plan.
+              Paste a Job Description and a Company URL to let Prep Aligner build your personalized interview study plan.
             </p>
             <Link to="/kits/new">
               <Button variant="outline">Create your first kit</Button>

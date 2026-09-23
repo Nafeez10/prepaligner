@@ -23,7 +23,7 @@ const NewKit = () => {
     e.preventDefault();
     setError('');
     setLoading(true);
-    
+
     try {
       const response = await KitsAPI.create({
         company_url: url,
@@ -60,7 +60,7 @@ const NewKit = () => {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="company_url">Company URL (e.g., careers page, about page)</Label>
+              <Label htmlFor="company_url">Company URL</Label>
               <Input
                 id="company_url"
                 type="url"
@@ -85,7 +85,7 @@ const NewKit = () => {
                 The exact job title you're preparing for. This helps us find targeted interview questions.
               </p>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="jd">Job Description</Label>
               <textarea

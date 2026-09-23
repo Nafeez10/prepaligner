@@ -64,17 +64,17 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
         {/* Company Info */}
         <Card className="bg-card border-border/15 shadow-sm">
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-primary mb-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 items-start">
+              <div className="flex items-center gap-2 text-primary">
                 <Building2 className="h-5 w-5" />
                 <CardTitle>Company Overview</CardTitle>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto mt-1 sm:mt-0">
                 {isSaving && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
                 <button 
                   onClick={handleRegenerate} 
                   disabled={isRegenerating}
-                  className="text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground px-2 py-1 rounded transition-colors flex items-center gap-1"
+                  className="text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground px-3 py-1.5 rounded transition-colors flex items-center justify-center gap-1 w-full sm:w-auto border border-border/10"
                 >
                   {isRegenerating ? <Loader2 className="h-3 w-3 animate-spin" /> : null}
                   Regenerate Brief
@@ -86,7 +86,7 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
             <div>
               <h4 className="font-semibold text-muted-foreground mb-1">Summary</h4>
               <textarea 
-                className="w-full bg-transparent border border-transparent hover:border-border/20 focus:border-primary/50 focus:bg-background/50 rounded-md p-2 transition-colors resize-none leading-relaxed min-h-[100px]"
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y min-h-[120px] leading-relaxed transition-colors"
                 value={summary}
                 disabled={isRegenerating}
                 onChange={(e) => handleChange('summary', e.target.value)}
@@ -95,7 +95,7 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
             <div>
               <h4 className="font-semibold text-muted-foreground mb-1">What They Do</h4>
               <textarea 
-                className="w-full bg-transparent border border-transparent hover:border-border/20 focus:border-primary/50 focus:bg-background/50 rounded-md p-2 transition-colors resize-none leading-relaxed min-h-[100px]"
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y min-h-[120px] leading-relaxed transition-colors"
                 value={whatTheyDo}
                 disabled={isRegenerating}
                 onChange={(e) => handleChange('what_they_do', e.target.value)}

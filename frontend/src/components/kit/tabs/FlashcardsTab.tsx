@@ -125,16 +125,16 @@ const FlashcardsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, r
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 items-start">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
           {isSaving ? "Saving changes..." : "All changes saved"}
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => setIsAddModalOpen(true)}>
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <Button variant="outline" onClick={() => setIsAddModalOpen(true)} className="w-full sm:w-auto">
             <Plus className="mr-2 h-4 w-4" /> Add Flashcard
           </Button>
-          <Button variant="secondary" onClick={handleRegenerate} disabled={isRegenerating}>
+          <Button variant="secondary" onClick={handleRegenerate} disabled={isRegenerating} className="w-full sm:w-auto">
             {isRegenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
             Regenerate Unpinned
           </Button>

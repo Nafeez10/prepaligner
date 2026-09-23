@@ -22,19 +22,19 @@ const CategoryColumn = ({ categoryId, items, onAdd, onUpdate, onDelete, onToggle
 
   return (
     <div className="bg-secondary p-6 rounded-xl border border-border/10 space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between items-start">
         <h2 className="text-lg font-bold capitalize text-primary flex items-center gap-2">
           {categoryId === 'technical' && <Code className="h-5 w-5" />}
           {(categoryId === 'behavioural' || categoryId === 'company-fit') && <Users className="h-5 w-5" />}
           {categoryId === 'system-design' && <Brain className="h-5 w-5" />}
           {categoryId.replace('-', ' ')}
         </h2>
-        <div className="flex gap-1">
-          <Button variant="ghost" size="sm" onClick={() => onRegenerate(categoryId)} disabled={isRegenerating}>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button variant="outline" size="sm" onClick={() => onRegenerate(categoryId)} disabled={isRegenerating} className="w-full sm:w-auto bg-background/50 hover:bg-secondary">
             {isRegenerating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Brain className="h-4 w-4 mr-1" />}
             {isRegenerating ? "Regenerating..." : "Regenerate"}
           </Button>
-          <Button variant="ghost" size="sm" onClick={() => onAdd(categoryId)} disabled={isRegenerating}>
+          <Button variant="outline" size="sm" onClick={() => onAdd(categoryId)} disabled={isRegenerating} className="w-full sm:w-auto bg-background/50 hover:bg-secondary">
             <Plus className="h-4 w-4 mr-1" /> Add
           </Button>
         </div>

@@ -97,7 +97,7 @@ const SortableQuestionCard = ({ question, onUpdate, onDelete, onTogglePin }: Sor
                     Level {question.difficulty}
                   </span>
                 </div>
-                <h3 className="text-lg font-medium leading-snug">{question.prompt}</h3>
+                <h3 className="text-base md:text-lg font-medium leading-snug">{question.prompt}</h3>
               </div>
             </div>
             <div className="flex-shrink-0 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity" onClick={e => e.stopPropagation()}>

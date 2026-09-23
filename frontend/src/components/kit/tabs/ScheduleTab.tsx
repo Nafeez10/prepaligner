@@ -35,14 +35,14 @@ const ScheduleTab = ({ kitData, regenerationStates }: Props) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 items-start">
         <div className="text-sm text-muted-foreground">
           The schedule allocates topics based on your available study days.
         </div>
         <button 
           onClick={() => setIsModalOpen(true)} 
           disabled={isRegenerating}
-          className="text-sm bg-secondary hover:bg-secondary/80 text-secondary-foreground px-4 py-2 rounded transition-colors flex items-center gap-2"
+          className="text-sm bg-secondary hover:bg-secondary/80 text-secondary-foreground px-4 py-2 rounded transition-colors flex items-center justify-center gap-2 w-full sm:w-auto border border-border/10"
         >
           {isRegenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
           Regenerate Schedule

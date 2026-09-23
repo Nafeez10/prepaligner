@@ -150,7 +150,7 @@ const QuestionsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, re
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4 items-start">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
           {isSaving ? "Saving changes..." : "All changes saved"}

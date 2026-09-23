@@ -70,7 +70,7 @@ const MockInterviewer = () => {
           
           <PlaySquare className="h-12 w-12 text-accent" />
           
-          <h2 className="text-2xl md:text-3xl font-medium leading-relaxed max-w-3xl text-brand-navy">
+          <h2 className="text-xl md:text-3xl font-medium leading-relaxed max-w-3xl text-brand-navy">
             {currentQuestion.prompt}
           </h2>
 
@@ -103,6 +103,7 @@ const MockInterviewer = () => {
               variant="secondary" 
               onClick={() => setCurrentIndex(prev => Math.max(0, prev - 1))}
               disabled={currentIndex === 0}
+              className="flex-1 sm:flex-none"
             >
               Previous
             </Button>
@@ -110,14 +111,14 @@ const MockInterviewer = () => {
             {!isLast ? (
               <Button 
                 onClick={() => setCurrentIndex(prev => Math.min(questions.length - 1, prev + 1))}
-                className="gap-2 min-w-[120px]"
+                className="gap-2 flex-1 sm:flex-none sm:min-w-[120px]"
               >
                 Next <ChevronRight className="h-4 w-4" />
               </Button>
             ) : (
               <Button 
                 onClick={() => navigate(`/kits/${id}`)}
-                className="gap-2 min-w-[120px] bg-green-600 hover:bg-green-700 text-white"
+                className="gap-2 flex-1 sm:flex-none sm:min-w-[120px] bg-green-600 hover:bg-green-700 text-white"
               >
                 Finish <CheckCircle2 className="h-4 w-4" />
               </Button>
