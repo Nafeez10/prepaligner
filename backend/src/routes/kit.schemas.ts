@@ -21,10 +21,11 @@ export const UpdateKitDataSchema = z.object({
 });
 
 export const RegenerateSectionSchema = z.object({
-  section: z.enum(['questions', 'flashcards']),
+  section: z.enum(['company_brief', 'schedule', 'category', 'flashcards']),
   payload: z
     .object({
-      items: z.array(z.unknown()).optional(),
+      category: z.enum(['technical', 'behavioural', 'system-design', 'company-fit']).optional(),
+      provider: z.string().optional(),
     })
     .optional(),
 });

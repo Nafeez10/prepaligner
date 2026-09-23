@@ -19,11 +19,11 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
-import { ManagedFlashcard } from '@/types/kit';
+import { ManagedFlashcard, ManagedKit } from '@/types/kit';
 import SortableFlashcard from '../builder/SortableFlashcard';
 import AddFlashcardModal from '../builder/AddFlashcardModal';
 
-const FlashcardsTab = ({ kitData }: { kitData: any }) => {
+const FlashcardsTab = ({ kitData }: { kitData: ManagedKit }) => {
   const { id } = useParams<{ id: string }>();
   const { mutate } = useKit(id);
   const { triggerSave, isSaving } = useDebounceSave(id, mutate);
@@ -111,7 +111,7 @@ const FlashcardsTab = ({ kitData }: { kitData: any }) => {
     if (!id) return;
     setIsRegenerating(true);
     try {
-      await KitsAPI.regenerateSection(id, 'flashcards', items);
+      await KitsAPI.regenerateSection(id, 'flashcards', {});
       await mutate();
     } catch (e) {
       console.error('Failed to regenerate flashcards', e);

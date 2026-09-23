@@ -155,42 +155,7 @@ export class KitController {
         return;
       }
 
-      const currentQuestions = payload?.items || kit.kitData.questions || [];
-      const currentFlashcards = payload?.items || kit.kitData.flashcards || [];
-
-      const updatedData = { ...kit.kitData };
-
-      if (section === 'questions') {
-        const preserved = currentQuestions.filter(
-          (q: any) => q.metadata?.is_pinned || q.metadata?.is_edited
-        );
-        updatedData.questions = [
-          ...preserved,
-          {
-            id: `q_regen_${Date.now()}`,
-            requirement_ids: [],
-            category: 'technical' as const,
-            prompt: 'Newly regenerated question based on feedback',
-            answer_outline: 'Regenerated outline',
-            difficulty: 2 as const,
-            metadata: { origin: 'regenerated' as const, is_pinned: false, is_edited: false, user_modified_at: null },
-          },
-        ];
-      } else if (section === 'flashcards') {
-        const preserved = currentFlashcards.filter(
-          (f: any) => f.metadata?.is_pinned || f.metadata?.is_edited
-        );
-        updatedData.flashcards = [
-          ...preserved,
-          {
-            id: `f_regen_${Date.now()}`,
-            requirement_ids: [],
-            front: 'Regenerated front',
-            back: 'Regenerated back',
-            metadata: { origin: 'regenerated' as const, is_pinned: false, is_edited: false, user_modified_at: null },
-          },
-        ];
-      }
+      const updatedData = await KitService.regenerateSection(kit, section, payload);
 
       await KitModel.findByIdAndUpdate(req.params.id, { kitData: updatedData });
       res.json({ message: 'Section regenerated successfully', kitData: updatedData });

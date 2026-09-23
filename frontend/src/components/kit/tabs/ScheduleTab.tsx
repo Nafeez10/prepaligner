@@ -1,16 +1,50 @@
-import { CheckCircle2, Circle } from 'lucide-react';
+import { CheckCircle2, Circle, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { KitsAPI, useKit } from '@/api/routes/KitsAPI';
+
+import { ManagedKit, ScheduleDay } from '@/types/kit';
 
 interface Props {
-  kitData: any;
+  kitData: ManagedKit;
 }
 
 const ScheduleTab = ({ kitData }: Props) => {
+  const { id } = useParams<{ id: string }>();
+  const { mutate } = useKit(id);
+  const [isRegenerating, setIsRegenerating] = useState(false);
+
+  const handleRegenerate = async () => {
+    if (!id) return;
+    setIsRegenerating(true);
+    try {
+      await KitsAPI.regenerateSection(id, 'schedule', {});
+      await mutate();
+    } catch (e) {
+      console.error('Failed to regenerate schedule', e);
+    } finally {
+      setIsRegenerating(false);
+    }
+  };
   if (!kitData || !kitData.schedule || !kitData.schedule.days) return null;
 
   return (
-    <div className="space-y-8">
-      <div className="relative border-l border-white/10 ml-3 md:ml-4 space-y-8 pb-4">
-        {kitData.schedule.days.map((day: any) => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center mb-4">
+        <div className="text-sm text-muted-foreground">
+          The schedule allocates topics based on your available study days.
+        </div>
+        <button 
+          onClick={handleRegenerate} 
+          disabled={isRegenerating}
+          className="text-sm bg-secondary hover:bg-secondary/80 text-secondary-foreground px-4 py-2 rounded transition-colors flex items-center gap-2"
+        >
+          {isRegenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+          Regenerate Schedule
+        </button>
+      </div>
+      <div className={`relative border-l border-white/10 ml-3 md:ml-4 space-y-8 pb-4 ${isRegenerating ? 'opacity-50 pointer-events-none' : ''}`}>
+        {kitData.schedule.days.map((day: ScheduleDay) => (
           <div key={day.day} className="relative pl-8">
             <div className="absolute -left-3.5 top-1 h-7 w-7 rounded-full bg-background border-2 border-primary/50 flex items-center justify-center">
               <Circle className="h-3 w-3 text-primary" fill="currentColor" />

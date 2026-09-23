@@ -2,11 +2,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ExternalLink, Building2, Target, Loader2 } from 'lucide-react';
 import { useDebounceSave } from '@/hooks/useDebounceSave';
 import { useParams } from 'react-router-dom';
-import { useKit } from '@/api/routes/KitsAPI';
+import { KitsAPI, useKit } from '@/api/routes/KitsAPI';
 import { useState, useEffect } from 'react';
 
+import { ManagedKit } from '@/types/kit';
+
 interface Props {
-  kitData: any;
+  kitData: ManagedKit;
 }
 
 const CompanyBriefTab = ({ kitData }: Props) => {
@@ -16,6 +18,7 @@ const CompanyBriefTab = ({ kitData }: Props) => {
 
   const [summary, setSummary] = useState(kitData?.company_brief?.summary || '');
   const [whatTheyDo, setWhatTheyDo] = useState(kitData?.company_brief?.what_they_do || '');
+  const [isRegenerating, setIsRegenerating] = useState(false);
 
   useEffect(() => {
     setSummary(kitData?.company_brief?.summary || '');
@@ -41,6 +44,19 @@ const CompanyBriefTab = ({ kitData }: Props) => {
     triggerSave(updatedKitData);
   };
 
+  const handleRegenerate = async () => {
+    if (!id) return;
+    setIsRegenerating(true);
+    try {
+      await KitsAPI.regenerateSection(id, 'company_brief', {});
+      await mutate();
+    } catch (e) {
+      console.error('Failed to regenerate company brief', e);
+    } finally {
+      setIsRegenerating(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -52,7 +68,17 @@ const CompanyBriefTab = ({ kitData }: Props) => {
                 <Building2 className="h-5 w-5" />
                 <CardTitle>Company Overview</CardTitle>
               </div>
-              {isSaving && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+              <div className="flex items-center gap-2">
+                {isSaving && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+                <button 
+                  onClick={handleRegenerate} 
+                  disabled={isRegenerating}
+                  className="text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground px-2 py-1 rounded transition-colors flex items-center gap-1"
+                >
+                  {isRegenerating ? <Loader2 className="h-3 w-3 animate-spin" /> : null}
+                  Regenerate Brief
+                </button>
+              </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
@@ -61,6 +87,7 @@ const CompanyBriefTab = ({ kitData }: Props) => {
               <textarea 
                 className="w-full bg-transparent border border-transparent hover:border-white/10 focus:border-primary/50 focus:bg-background/50 rounded-md p-2 transition-colors resize-none leading-relaxed min-h-[100px]"
                 value={summary}
+                disabled={isRegenerating}
                 onChange={(e) => handleChange('summary', e.target.value)}
               />
             </div>
@@ -69,6 +96,7 @@ const CompanyBriefTab = ({ kitData }: Props) => {
               <textarea 
                 className="w-full bg-transparent border border-transparent hover:border-white/10 focus:border-primary/50 focus:bg-background/50 rounded-md p-2 transition-colors resize-none leading-relaxed min-h-[100px]"
                 value={whatTheyDo}
+                disabled={isRegenerating}
                 onChange={(e) => handleChange('what_they_do', e.target.value)}
               />
             </div>

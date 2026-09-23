@@ -13,9 +13,11 @@ interface CategoryColumnProps {
   onUpdate: (qId: string, updates: Partial<ManagedQuestion>) => void;
   onDelete: (qId: string) => void;
   onTogglePin: (qId: string) => void;
+  onRegenerate: (category: string) => void;
+  isRegenerating: boolean;
 }
 
-const CategoryColumn = ({ categoryId, items, onAdd, onUpdate, onDelete, onTogglePin }: CategoryColumnProps) => {
+const CategoryColumn = ({ categoryId, items, onAdd, onUpdate, onDelete, onTogglePin, onRegenerate, isRegenerating }: CategoryColumnProps) => {
   const { setNodeRef } = useDroppable({ id: categoryId });
 
   return (
@@ -27,12 +29,17 @@ const CategoryColumn = ({ categoryId, items, onAdd, onUpdate, onDelete, onToggle
           {categoryId === 'system-design' && <Brain className="h-5 w-5" />}
           {categoryId.replace('-', ' ')}
         </h2>
-        <Button variant="ghost" size="sm" onClick={() => onAdd(categoryId)}>
-          <Plus className="h-4 w-4 mr-1" /> Add
-        </Button>
+        <div className="flex gap-1">
+          <Button variant="ghost" size="sm" onClick={() => onRegenerate(categoryId)} disabled={isRegenerating}>
+            <Brain className={`h-4 w-4 ${isRegenerating ? 'animate-pulse' : ''}`} />
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => onAdd(categoryId)} disabled={isRegenerating}>
+            <Plus className="h-4 w-4 mr-1" /> Add
+          </Button>
+        </div>
       </div>
 
-      <div ref={setNodeRef}>
+      <div ref={setNodeRef} className={isRegenerating ? 'opacity-50 pointer-events-none' : ''}>
         <SortableContext items={items.map(i => i.id)} strategy={verticalListSortingStrategy}>
           <div className="space-y-3 min-h-[50px]">
             {items.map(q => (

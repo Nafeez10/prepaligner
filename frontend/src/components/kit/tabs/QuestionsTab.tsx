@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { KitsAPI, useKit } from '@/api/routes/KitsAPI';
 import { useDebounceSave } from '@/hooks/useDebounceSave';
@@ -15,18 +14,18 @@ import {
   DragOverEvent
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { ManagedQuestion } from '@/types/kit';
+import { ManagedQuestion, ManagedKit } from '@/types/kit';
 import { CATEGORIES } from '@/constants/kitConstants';
 import CategoryColumn from '../builder/CategoryColumn';
 import AddQuestionModal from '../builder/AddQuestionModal';
 
-const QuestionsTab = ({ kitData }: { kitData: any }) => {
+const QuestionsTab = ({ kitData }: { kitData: ManagedKit }) => {
   const { id } = useParams<{ id: string }>();
   const { mutate } = useKit(id);
   const { triggerSave, isSaving } = useDebounceSave(id, mutate);
   
   const [items, setItems] = useState<ManagedQuestion[]>([]);
-  const [isRegenerating, setIsRegenerating] = useState(false);
+  const [regeneratingCategory, setRegeneratingCategory] = useState<string | null>(null);
   const [addModalCategory, setAddModalCategory] = useState<string | null>(null);
 
   useEffect(() => {
@@ -134,16 +133,16 @@ const QuestionsTab = ({ kitData }: { kitData: any }) => {
     setAddModalCategory(null);
   }, [saveToBackend]);
 
-  const handleRegenerate = async () => {
+  const handleRegenerateCategory = async (category: string) => {
     if (!id) return;
-    setIsRegenerating(true);
+    setRegeneratingCategory(category);
     try {
-      await KitsAPI.regenerateSection(id, 'questions', items);
+      await KitsAPI.regenerateSection(id, 'category', { category });
       await mutate();
     } catch (e) {
-      console.error('Failed to regenerate questions', e);
+      console.error('Failed to regenerate category', e);
     } finally {
-      setIsRegenerating(false);
+      setRegeneratingCategory(null);
     }
   };
 
@@ -156,10 +155,6 @@ const QuestionsTab = ({ kitData }: { kitData: any }) => {
           {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
           {isSaving ? "Saving changes..." : "All changes saved"}
         </div>
-        <Button variant="secondary" onClick={handleRegenerate} disabled={isRegenerating}>
-          {isRegenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-          Regenerate Unpinned
-        </Button>
       </div>
 
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
@@ -175,6 +170,8 @@ const QuestionsTab = ({ kitData }: { kitData: any }) => {
               onUpdate={handleUpdate}
               onDelete={handleDelete}
               onTogglePin={handleTogglePin}
+              onRegenerate={handleRegenerateCategory}
+              isRegenerating={regeneratingCategory === category}
             />
           );
         })}

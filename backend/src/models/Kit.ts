@@ -11,6 +11,7 @@ export interface IKitDoc extends Document {
   company_url?: string;
   role_name?: string;
   study_days?: number;
+  raw_context?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,6 +32,7 @@ const KitSchema = new Schema({
   company_url: { type: String },
   role_name: { type: String },
   study_days: { type: Number },
+  raw_context: { type: String },
   kitData: { type: Schema.Types.Mixed }, // Use Mixed for the heavily nested Appendix A schema
 }, { timestamps: true });
 

@@ -5,6 +5,7 @@
   "scripts": {
     "evaluate": "cd backend && npm run evaluate",
     "dev": "npm run dev --prefix backend & npm run dev --prefix frontend",
+    "dev:with-db": "docker compose up -d mongo && npm run dev",
     "build": "npm run build --prefix backend && npm run build --prefix frontend",
     "test": "npm test --prefix backend",
     "docker:up": "docker compose up --build",

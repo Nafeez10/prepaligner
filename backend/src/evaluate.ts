@@ -54,7 +54,12 @@ async function main() {
   for (const tc of inputCases) {
     console.log(`Processing case: ${tc.id}`);
     try {
-      const kit = await orchestrator.generateKit(tc.jd, tc.company_url, tc.days);
+      const { kit } = await orchestrator.generateKit(
+        tc.jd,
+        tc.company_url,
+        tc.days,
+        'gemini'
+      );
       outputKits.push({
         id: tc.id,
         status: "ok",

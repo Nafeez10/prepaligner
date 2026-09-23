@@ -2,6 +2,12 @@
  * Single source of truth for all environment variables.
  * Import this instead of accessing process.env directly throughout the app.
  */
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load .env from the root of the monorepo
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+
 export const config = {
   port: parseInt(process.env.PORT || '5000', 10),
   mongoUri:

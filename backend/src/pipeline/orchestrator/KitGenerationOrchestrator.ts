@@ -10,7 +10,7 @@ import { LLMProviderFactory } from '../llm/LLMProviderFactory';
 import { Kit, KitSchema } from '../../types/schemas';
 
 export class KitGenerationOrchestrator {
-  public async generateKit(jd: string, companyUrl: string, days: number, providerName: string = 'gemini', roleName: string = ''): Promise<Kit> {
+  public async generateKit(jd: string, companyUrl: string, days: number, providerName: string = 'gemini', roleName: string = ''): Promise<{ kit: Kit, rawContext: string }> {
     const llm = LLMProviderFactory.createProvider(providerName);
     
     // Services
@@ -108,6 +108,6 @@ export class KitGenerationOrchestrator {
       throw new Error("Generated kit does not conform to Appendix A schema.");
     }
 
-    return parseResult.data as Kit;
+    return { kit: parseResult.data as Kit, rawContext: companyContext };
   }
 }
