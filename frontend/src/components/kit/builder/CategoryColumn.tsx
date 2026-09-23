@@ -21,7 +21,7 @@ const CategoryColumn = ({ categoryId, items, onAdd, onUpdate, onDelete, onToggle
   const { setNodeRef } = useDroppable({ id: categoryId });
 
   return (
-    <div className="bg-black/20 p-4 rounded-xl border border-white/5 space-y-4">
+    <div className="bg-secondary p-6 rounded-xl border border-border/10 space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold capitalize text-primary flex items-center gap-2">
           {categoryId === 'technical' && <Code className="h-5 w-5" />}
@@ -53,7 +53,7 @@ const CategoryColumn = ({ categoryId, items, onAdd, onUpdate, onDelete, onToggle
               />
             ))}
             {items.length === 0 && (
-              <div className="text-sm text-muted-foreground italic p-4 text-center border border-dashed border-white/10 rounded-lg">
+              <div className="text-sm text-muted-foreground italic p-4 text-center border border-dashed border-border/20 rounded-lg">
                 Drag questions here
               </div>
             )}

@@ -4,54 +4,56 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 43 33% 97%; /* #FBF9F4 */
+    --foreground: 210 52% 22%; /* #1B3855 */
     
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 210 52% 22%; /* #1B3855 */
     
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%; /* #FFFFFF */
+    --popover-foreground: 210 52% 22%; /* #1B3855 */
     
-    --primary: 252 56% 57%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 210 52% 22%; /* #1B3855 */
+    --primary-foreground: 43 33% 97%; /* #FBF9F4 */
     
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 43 25% 94%; /* #F5F1E8 */
+    --secondary-foreground: 210 52% 22%; /* #1B3855 */
     
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 43 25% 94%; /* #F5F1E8 */
+    --muted-foreground: 201 79% 26%; /* #0E5278 */
     
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 63 91% 48%; /* #DEE90B */
+    --accent-foreground: 210 52% 22%; /* #1B3855 */
     
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --border: 201 79% 26%; /* #0E5278 */
+    --input: 201 79% 26%; /* #0E5278 */
+    --ring: 63 91% 48%; /* #DEE90B */
     
-    --radius: 0.75rem;
+    --radius: 0.5rem;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border/15;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground;
+    @apply bg-background text-foreground antialiased selection:bg-accent selection:text-accent-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
-/* Glassmorphism Utilities */
 @layer utilities {
-  .glass {
-    @apply bg-background/60 backdrop-blur-md border border-white/10;
+  .bg-gradient-brand {
+    @apply bg-gradient-to-r from-[#DEE90B] to-[#D9E241];
   }
-  .glass-card {
-    @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl;
+  .text-brand-navy {
+    @apply text-[#1B3855];
+  }
+  .text-brand-steel {
+    @apply text-[#0E5278];
   }
 }

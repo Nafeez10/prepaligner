@@ -35,9 +35,9 @@ export const notifyRegenerationTransitions = (
     if (prevState === 'generating' && currState !== 'generating') {
       const displayName = formatSectionName(section);
       if (currState === 'idle') {
-        toast.success(`${displayName} regenerated successfully`);
+        toast.success(`${displayName} regenerated successfully`, { id: `success-${section}` });
       } else if (currState === 'failed') {
-        toast.error(`Failed to regenerate ${displayName.toLowerCase()}`);
+        toast.error(`Failed to regenerate ${displayName.toLowerCase()}`, { id: `failed-${section}` });
       }
     }
   });
@@ -52,9 +52,9 @@ export const notifyRegenerationTransitions = (
 
     if (prevState === 'generating' && currState !== 'generating') {
       if (currState === 'idle') {
-        toast.success(`Category "${categoryName}" regenerated successfully`);
+        toast.success(`Category "${categoryName}" regenerated successfully`, { id: `success-category-${categoryName}` });
       } else if (currState === 'failed') {
-        toast.error(`Failed to regenerate category "${categoryName}"`);
+        toast.error(`Failed to regenerate category "${categoryName}"`, { id: `failed-category-${categoryName}` });
       }
     }
   });

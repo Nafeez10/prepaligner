@@ -47,7 +47,7 @@ const KitCard = ({ kit, onDeleteSuccess, onStatusChange }: KitCardProps) => {
   return (
     <>
       <Link to={`/kits/${kit._id}`} className="block group relative">
-        <Card className="h-full transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 glass-card">
+        <Card className="h-full transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 bg-card border-border/15 shadow-sm">
         <div className="absolute top-4 right-4 z-10">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -75,7 +75,7 @@ const KitCard = ({ kit, onDeleteSuccess, onStatusChange }: KitCardProps) => {
           </DropdownMenu>
         </div>
         <CardHeader>
-          <CardTitle className="text-xl group-hover:text-primary transition-colors pr-8">
+          <CardTitle className="text-xl group-hover:text-primary transition-colors pr-8 break-words break-all">
             {kit.title}
           </CardTitle>
           <CardDescription>

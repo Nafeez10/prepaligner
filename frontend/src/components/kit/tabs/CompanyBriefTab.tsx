@@ -62,7 +62,7 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Company Info */}
-        <Card className="glass-card">
+        <Card className="bg-card border-border/15 shadow-sm">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-primary mb-2">
@@ -86,7 +86,7 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
             <div>
               <h4 className="font-semibold text-muted-foreground mb-1">Summary</h4>
               <textarea 
-                className="w-full bg-transparent border border-transparent hover:border-white/10 focus:border-primary/50 focus:bg-background/50 rounded-md p-2 transition-colors resize-none leading-relaxed min-h-[100px]"
+                className="w-full bg-transparent border border-transparent hover:border-border/20 focus:border-primary/50 focus:bg-background/50 rounded-md p-2 transition-colors resize-none leading-relaxed min-h-[100px]"
                 value={summary}
                 disabled={isRegenerating}
                 onChange={(e) => handleChange('summary', e.target.value)}
@@ -95,14 +95,14 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
             <div>
               <h4 className="font-semibold text-muted-foreground mb-1">What They Do</h4>
               <textarea 
-                className="w-full bg-transparent border border-transparent hover:border-white/10 focus:border-primary/50 focus:bg-background/50 rounded-md p-2 transition-colors resize-none leading-relaxed min-h-[100px]"
+                className="w-full bg-transparent border border-transparent hover:border-border/20 focus:border-primary/50 focus:bg-background/50 rounded-md p-2 transition-colors resize-none leading-relaxed min-h-[100px]"
                 value={whatTheyDo}
                 disabled={isRegenerating}
                 onChange={(e) => handleChange('what_they_do', e.target.value)}
               />
             </div>
             
-            <div className="pt-4 border-t border-white/5">
+            <div className="pt-4 border-t border-border/10">
               <h4 className="font-semibold text-muted-foreground mb-2">Sources Researched</h4>
               <ul className="space-y-1">
                 {kitData.company_brief.sources.map((src: string, idx: number) => (
@@ -118,7 +118,7 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
         </Card>
 
         {/* Role Info */}
-        <Card className="glass-card">
+        <Card className="bg-card border-border/15 shadow-sm">
           <CardHeader>
             <div className="flex items-center gap-2 text-primary mb-2">
               <Target className="h-5 w-5" />
@@ -136,11 +136,11 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
               </ul>
             </div>
 
-            <div className="pt-4 border-t border-white/5">
+            <div className="pt-4 border-t border-border/10">
               <h4 className="font-semibold text-muted-foreground mb-2">Requirements Assessed</h4>
               <div className="space-y-2">
                 {role.requirements.map((req: any) => (
-                  <div key={req.id} className="p-3 rounded bg-black/20 border border-white/5">
+                  <div key={req.id} className="p-4 rounded-xl bg-secondary border border-border/10">
                     <div className="flex justify-between mb-1">
                       <span className="text-xs font-semibold uppercase tracking-wider text-primary/80">{req.kind}</span>
                       <span className={`text-xs px-2 py-0.5 rounded-full ${req.priority === 'must' ? 'bg-destructive/20 text-destructive' : 'bg-primary/20 text-primary'}`}>

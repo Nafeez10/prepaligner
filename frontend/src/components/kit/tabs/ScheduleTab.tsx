@@ -48,14 +48,14 @@ const ScheduleTab = ({ kitData, regenerationStates }: Props) => {
           Regenerate Schedule
         </button>
       </div>
-      <div className={`relative border-l border-white/10 ml-3 md:ml-4 space-y-8 pb-4 ${isRegenerating ? 'opacity-50 pointer-events-none' : ''}`}>
+      <div className={`relative border-l-2 border-border/15 ml-3 md:ml-4 space-y-8 pb-4 ${isRegenerating ? 'opacity-50 pointer-events-none' : ''}`}>
         {kitData.schedule.days.map((day: ScheduleDay) => (
-          <div key={day.day} className="relative pl-8">
-            <div className="absolute -left-3.5 top-1 h-7 w-7 rounded-full bg-background border-2 border-primary/50 flex items-center justify-center">
-              <Circle className="h-3 w-3 text-primary" fill="currentColor" />
+          <div key={day.day} className="relative pl-8 group">
+            <div className="absolute -left-[17px] top-1 h-8 w-8 rounded-full bg-card border-2 border-border/20 flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:border-accent transition-all duration-300">
+              <Circle className="h-3 w-3 text-brand-navy" fill="currentColor" />
             </div>
             
-            <div className="glass-card rounded-xl p-5 hover:border-primary/30 transition-colors">
+            <div className="bg-card border border-border/15 shadow-sm rounded-xl p-5 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-sm font-bold text-primary uppercase tracking-wide">
                   Day {day.day} ({day.minutes} min)

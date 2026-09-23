@@ -114,7 +114,7 @@ const KitViewer = () => {
       </div>
 
       <Tabs defaultValue="brief" className="w-full">
-        <TabsList className="mb-6 w-full justify-start overflow-x-auto bg-black/20 border border-white/5 p-1 h-auto">
+        <TabsList className="mb-6 inline-flex w-fit justify-start overflow-x-auto bg-secondary border border-border/10 p-1 rounded-lg">
           <TabsTrigger value="brief" className="px-6 py-2">Company Brief</TabsTrigger>
           <TabsTrigger value="questions" className="px-6 py-2">Question Bank</TabsTrigger>
           <TabsTrigger value="flashcards" className="px-6 py-2">Flashcards</TabsTrigger>

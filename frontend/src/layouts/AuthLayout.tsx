@@ -23,7 +23,7 @@ const AuthLayout = () => {
       <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary/30 blur-[120px] pointer-events-none" />
       
       <div className="relative z-10 w-full max-w-md p-8">
-        <div className="glass-card rounded-2xl p-8 space-y-6">
+        <div className="bg-card border-border/15 shadow-sm rounded-2xl p-8 space-y-6">
           <Outlet />
         </div>
       </div>

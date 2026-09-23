@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import useSWR from 'swr';
 import { swrFetcher } from '../../fetcher/swrFetcher';
 import { notifyRegenerationTransitions } from '@/utils/regenerationNotifier';
+import axiosInstance from '../../axios/axiosInstance';
 import { KitSummary, KitDetail, KitStatusResponse, RegenerationStates } from './types';
 
 export const useKits = () => {
@@ -78,7 +79,10 @@ export const useKit = (id?: string) => {
       const isNowGenerating = isAnySectionGenerating(current);
       if (wasGenerating && !isNowGenerating) {
         // A section just finished — pull fresh kitData
-        mutateKit();
+        // Bypass SWR deduplication by fetching manually and injecting into cache
+        axiosInstance.get(`/kits/${id}`).then((res) => {
+          mutateKit(res.data, { revalidate: false });
+        }).catch(err => console.error("Failed to fetch fresh kit", err));
       }
 
       // Delegate UI side-effects to the utility function

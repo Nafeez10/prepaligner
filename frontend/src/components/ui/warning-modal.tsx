@@ -27,7 +27,7 @@ const WarningModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <Card className="glass-card w-full max-w-md border-destructive/50 relative overflow-hidden">
+      <Card className="bg-card border-border/15 shadow-sm w-full max-w-md border-destructive/50 relative overflow-hidden">
         {/* Top accent bar */}
         <div className={`h-1 w-full absolute top-0 left-0 ${isDestructive ? 'bg-destructive' : 'bg-primary'}`} />
         

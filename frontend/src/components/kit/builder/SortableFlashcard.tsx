@@ -37,7 +37,7 @@ const SortableFlashcard = ({ flashcard, onTogglePin, onDelete, onUpdate }: Sorta
 
   if (isEditing) {
     return (
-      <div ref={setNodeRef} style={style} className="relative h-64 w-full glass-card rounded-xl p-4 flex flex-col gap-3">
+      <div ref={setNodeRef} style={style} className="relative h-64 w-full bg-card border border-border/15 shadow-md rounded-xl p-4 flex flex-col gap-3">
         <textarea 
           value={front}
           onChange={e => setFront(e.target.value)}
@@ -73,7 +73,7 @@ const SortableFlashcard = ({ flashcard, onTogglePin, onDelete, onUpdate }: Sorta
       >
         {/* Front */}
         <div 
-          className={`absolute w-full h-full backface-hidden glass-card rounded-xl p-6 flex flex-col items-center justify-center text-center border-t-4 ${isPinned ? 'border-primary/50' : 'border-t-primary'}`}
+          className={`absolute w-full h-full backface-hidden bg-card border border-border/15 shadow-md rounded-xl p-6 flex flex-col items-center justify-center text-center transition-all ${isPinned ? 'ring-2 ring-accent' : ''}`}
           style={{ backfaceVisibility: 'hidden' }}
         >
           {/* Controls Overlay */}
@@ -107,7 +107,7 @@ const SortableFlashcard = ({ flashcard, onTogglePin, onDelete, onUpdate }: Sorta
 
         {/* Back */}
         <div 
-          className="absolute w-full h-full backface-hidden glass-card rounded-xl p-6 flex flex-col items-center justify-center text-center bg-primary/5 border-t-4 border-t-secondary"
+          className="absolute w-full h-full backface-hidden bg-secondary border border-border/15 shadow-md rounded-xl p-6 flex flex-col items-center justify-center text-center text-brand-navy"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           <span className="absolute bottom-4 right-4 text-xs font-semibold text-muted-foreground uppercase">A</span>

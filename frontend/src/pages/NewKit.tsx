@@ -50,7 +50,7 @@ const NewKit = () => {
         </p>
       </div>
 
-      <Card className="glass-card">
+      <Card className="bg-card border-border/15 shadow-sm">
         <form onSubmit={handleSubmit}>
           <CardHeader>
             <CardTitle>Role Requirements</CardTitle>

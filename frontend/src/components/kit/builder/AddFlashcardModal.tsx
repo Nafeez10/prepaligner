@@ -36,7 +36,7 @@ const AddFlashcardModal = ({ isOpen, onClose, onConfirm }: AddFlashcardModalProp
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="glass-card w-full max-w-lg border-primary/50 relative rounded-xl">
+      <div className="bg-card border-border/15 shadow-sm w-full max-w-lg border-primary/50 relative rounded-xl">
         <Button 
           variant="ghost" 
           size="icon" 

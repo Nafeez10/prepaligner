@@ -42,7 +42,7 @@ const RegenerateScheduleModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <Card className="glass-card w-full max-w-md relative overflow-hidden border-white/10">
+      <Card className="bg-card border-border/15 shadow-sm w-full max-w-md relative overflow-hidden border-white/10">
         <button 
           onClick={onClose}
           disabled={isRegenerating}

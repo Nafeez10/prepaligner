@@ -4,6 +4,7 @@ import { useKit } from '@/api/routes/KitsAPI';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight, Loader2, PlaySquare, Eye, CheckCircle2 } from 'lucide-react';
+import { Accordion, AccordionItem, AccordionContent } from '@/components/ui/accordion';
 
 const MockInterviewer = () => {
   const { id } = useParams<{ id: string }>();
@@ -54,36 +55,40 @@ const MockInterviewer = () => {
         </div>
       </div>
 
-      <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+      <div className="w-full bg-secondary border border-border/10 h-2 rounded-full overflow-hidden">
         <div 
-          className="bg-primary h-full transition-all duration-500 ease-out" 
+          className="bg-gradient-brand h-full transition-all duration-500 ease-out" 
           style={{ width: `${progress}%` }} 
         />
       </div>
 
-      <Card className="glass-card min-h-[400px] flex flex-col border-t-4 border-t-primary shadow-2xl">
+      <Card className="bg-card border border-border/15 min-h-[400px] flex flex-col shadow-sm rounded-xl overflow-hidden">
         <div className="flex-1 p-8 md:p-12 flex flex-col justify-center items-center text-center space-y-8 relative">
-          <div className="absolute top-6 left-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-white/5 px-3 py-1 rounded-full">
+          <div className="absolute top-6 left-6 text-xs font-semibold uppercase tracking-wider text-brand-navy bg-secondary border border-border/10 px-3 py-1 rounded-full">
             {currentQuestion.category}
           </div>
           
-          <PlaySquare className="h-12 w-12 text-primary/40" />
+          <PlaySquare className="h-12 w-12 text-accent" />
           
-          <h2 className="text-2xl md:text-3xl font-medium leading-relaxed max-w-3xl">
+          <h2 className="text-2xl md:text-3xl font-medium leading-relaxed max-w-3xl text-brand-navy">
             {currentQuestion.prompt}
           </h2>
 
-          {showOutline && (
-            <div className="mt-8 text-left w-full max-w-2xl bg-black/40 p-6 rounded-xl border border-white/10 animate-in fade-in slide-in-from-top-4">
-              <h4 className="text-sm font-semibold text-primary mb-3">Ideal Answer Outline</h4>
-              <div className="text-muted-foreground leading-relaxed whitespace-pre-wrap text-sm md:text-base">
-                {currentQuestion.answer_outline}
-              </div>
-            </div>
-          )}
+          <Accordion type="single" value={showOutline ? "item-1" : ""} className="w-full max-w-2xl">
+            <AccordionItem value="item-1" className="border-none">
+              <AccordionContent>
+                <div className="mt-4 text-left w-full bg-secondary p-6 rounded-xl border border-border/10">
+                  <h4 className="text-sm font-semibold text-brand-navy mb-3">Ideal Answer Outline</h4>
+                  <div className="text-brand-steel leading-relaxed whitespace-pre-wrap text-sm md:text-base">
+                    {currentQuestion.answer_outline}
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
         
-        <CardContent className="p-6 border-t border-white/5 bg-black/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <CardContent className="p-6 border-t border-border/15 bg-secondary/30 flex flex-col sm:flex-row items-center justify-between gap-4">
           <Button 
             variant="outline" 
             className="w-full sm:w-auto gap-2"
