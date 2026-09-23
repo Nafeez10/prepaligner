@@ -5,7 +5,7 @@ import { BatchInputSchema, BatchOutput, BatchOutputKit } from './types/schemas';
 import dotenv from 'dotenv';
 
 // Load env vars
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 async function main() {
   const args = process.argv.slice(2);
@@ -22,8 +22,9 @@ async function main() {
     process.exit(1);
   }
 
-  const resolvedInputPath = path.resolve(process.cwd(), inputPath);
-  const resolvedOutputPath = path.resolve(process.cwd(), outputPath);
+  const baseDir = process.env.INIT_CWD || process.cwd();
+  const resolvedInputPath = path.resolve(baseDir, inputPath);
+  const resolvedOutputPath = path.resolve(baseDir, outputPath);
 
   let rawData;
   try {

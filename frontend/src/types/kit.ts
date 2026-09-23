@@ -5,6 +5,8 @@ export interface EntityMetadata {
   is_pinned?: boolean;
   is_edited?: boolean;
   user_modified_at?: string | null;
+  confidence?: number;
+  last_reviewed?: string;
 }
 
 export interface Requirement {

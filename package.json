@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Full-Stack Engineering Assessment: The AI Interview Prep Kit",
   "scripts": {
-    "evaluate": "cd backend && npm run evaluate",
+    "evaluate": "npm run evaluate --prefix backend --",
     "dev": "npm run dev --prefix backend & npm run dev --prefix frontend",
     "dev:with-db": "docker compose up -d mongo && npm run dev",
     "build": "npm run build --prefix backend && npm run build --prefix frontend",

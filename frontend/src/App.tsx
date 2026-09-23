@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import NewKit from './pages/NewKit';
 import KitViewer from './pages/KitViewer';
 import MockInterviewer from './pages/MockInterviewer';
+import PracticeMode from './pages/PracticeMode';
 import { Toaster } from 'sonner';
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/kits/new" element={<NewKit />} />
         <Route path="/kits/:id" element={<KitViewer />} />
         <Route path="/kits/:id/mock-interview" element={<MockInterviewer />} />
+        <Route path="/kits/:id/practice" element={<PracticeMode />} />
       </Route>
 
       <Route path="/" element={<Navigate to="/dashboard" replace />} />

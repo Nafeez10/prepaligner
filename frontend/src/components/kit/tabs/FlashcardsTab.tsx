@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Loader2, Plus } from 'lucide-react';
+import { Loader2, Plus, PlaySquare } from 'lucide-react';
 import { KitsAPI, useKit } from '@/api/routes/KitsAPI';
 import { useDebounceSave } from '@/hooks/useDebounceSave';
 import {
@@ -131,8 +131,13 @@ const FlashcardsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, r
           {isSaving ? "Saving changes..." : "All changes saved"}
         </div>
         <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <Link to={`/kits/${id}/practice`} className="w-full sm:w-auto flex">
+            <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground gap-2">
+              <PlaySquare className="h-4 w-4" /> Practice
+            </Button>
+          </Link>
           <Button variant="outline" onClick={() => setIsAddModalOpen(true)} className="w-full sm:w-auto">
-            <Plus className="mr-2 h-4 w-4" /> Add Flashcard
+            <Plus className="mr-2 h-4 w-4" /> Add
           </Button>
           <Button variant="secondary" onClick={handleRegenerate} disabled={isRegenerating} className="w-full sm:w-auto">
             {isRegenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
