@@ -3,7 +3,8 @@ dist/
 build/
 .env
 .DS_Store
-coverage/
+/backend/coverage/
+/frontend/coverage/
 *.log
 
 # Docker
