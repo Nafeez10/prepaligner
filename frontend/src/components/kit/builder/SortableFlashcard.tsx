@@ -1,4 +1,4 @@
-import { useState, memo, MouseEvent } from 'react';
+import { useState, memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Pin, PinOff, GripVertical, Trash2, Edit2 } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
