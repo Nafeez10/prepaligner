@@ -28,7 +28,7 @@ const RegenerateScheduleModal = ({
   }, [isOpen, currentDays]);
 
   const isSameTimeline = studyDays === currentDays;
-  const isInvalid = studyDays < 1 || isNaN(studyDays);
+  const isInvalid = studyDays < 1 || studyDays > 90 || isNaN(studyDays);
 
   const canSubmit = !isSameTimeline && !isInvalid && !isRegenerating;
 
@@ -82,7 +82,7 @@ const RegenerateScheduleModal = ({
           {isInvalid && !isSameTimeline && (
             <div className="flex items-start gap-2 text-destructive text-xs p-3 bg-destructive/10 rounded-md border border-destructive/20">
               <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
-              <p>Please enter a valid number of days (1 or more).</p>
+              <p>Please enter a valid number of days (1 to 90).</p>
             </div>
           )}
         </div>

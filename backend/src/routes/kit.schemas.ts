@@ -27,7 +27,7 @@ export const RegenerateSectionSchema = z.object({
     .object({
       category: z.enum(['technical', 'behavioural', 'system-design', 'company-fit']).optional(),
       provider: z.string().optional(),
-      study_days: z.number().optional(),
+      study_days: z.number().int().min(1).max(90).optional(),
     })
     .optional(),
 });
