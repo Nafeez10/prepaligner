@@ -1,7 +1,7 @@
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { AuthSpinner } from '@/components/ui/auth-spinner';
-import { AnimatedUnderline } from '@/components/ui/animated-underline';
+import { DeveloperFooter } from './DeveloperFooter';
 
 const AuthLayout = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -37,12 +37,7 @@ const AuthLayout = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-8 text-center text-sm text-muted-foreground flex items-center justify-center">
-          Developed by 
-          <AnimatedUnderline className="ml-2 font-semibold text-foreground">
-            Nafeez10
-          </AnimatedUnderline>
-        </div>
+        <DeveloperFooter />
       </div>
     </div>
   );
