@@ -2,7 +2,7 @@ import { Outlet, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Sidebar } from './Sidebar';
-import { Spinner } from '@/components/ui/spinner';
+import { AuthSpinner } from '@/components/ui/auth-spinner';
 
 const DashboardLayout = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -10,7 +10,7 @@ const DashboardLayout = () => {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <Spinner size="lg" />
+        <AuthSpinner />
       </div>
     );
   }
