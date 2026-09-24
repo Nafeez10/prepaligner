@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Check } from 'lucide-react';
 import { ManagedQuestion } from '@/types/kit';
 
 interface AddQuestionModalProps {
@@ -42,44 +43,34 @@ const AddQuestionModal = ({ isOpen, category, onClose, onConfirm }: AddQuestionM
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <Card className="bg-card border-border/15 shadow-sm w-full max-w-lg border-primary/50 relative">
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="absolute top-2 right-2 text-muted-foreground hover:text-foreground" 
-          onClick={onClose}
-        >
-          <X className="h-4 w-4" />
-        </Button>
-        
-        <div className="p-6 flex flex-col gap-4">
-          <h3 className="text-xl font-semibold mb-2 capitalize text-primary">
-            Add {category.replace('-', ' ')} Question
-          </h3>
-          
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-muted-foreground">Question Prompt</label>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="w-[calc(100%-40px)] sm:w-full sm:max-w-[500px] rounded-xl max-md:p-5" onClick={e => e.stopPropagation()}>
+        <DialogHeader>
+          <DialogTitle className="max-md:text-lg capitalize">Add {category.replace('-', ' ')} Question</DialogTitle>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="space-y-2">
+            <Label>Question Prompt</Label>
             <textarea 
               value={prompt} 
               onChange={e => setPrompt(e.target.value)} 
-              className="w-full bg-background/50 rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary min-h-[80px]" 
+              className="w-full bg-background/50 rounded-md border border-input max-md:p-2.5 p-3 max-md:text-xs text-sm focus:outline-none focus:ring-1 focus:ring-primary font-medium min-h-[80px]" 
               placeholder="e.g. How does garbage collection work in Node.js?" 
             />
           </div>
           
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-muted-foreground">Answer Outline (Optional)</label>
+          <div className="space-y-2">
+            <Label>Answer Outline (Optional)</Label>
             <textarea 
               value={answerOutline} 
               onChange={e => setAnswerOutline(e.target.value)} 
-              className="w-full bg-background/50 rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary min-h-[120px]" 
+              className="w-full bg-background/50 rounded-md border border-input max-md:p-2.5 p-3 max-md:text-xs text-sm focus:outline-none focus:ring-1 focus:ring-primary min-h-[120px]" 
               placeholder="Key points to mention..." 
             />
           </div>
           
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-muted-foreground">Difficulty Level</label>
+          <div className="space-y-2">
+            <Label>Difficulty</Label>
             <Select 
               value={difficulty.toString()} 
               onValueChange={v => setDifficulty(Number(v) as 1 | 2 | 3)}
@@ -94,20 +85,15 @@ const AddQuestionModal = ({ isOpen, category, onClose, onConfirm }: AddQuestionM
               </SelectContent>
             </Select>
           </div>
-
-          <div className="flex justify-end gap-3 mt-4">
-            <Button variant="ghost" onClick={onClose}>Cancel</Button>
-            <Button 
-              onClick={handleConfirm} 
-              className="bg-primary text-primary-foreground" 
-              disabled={!prompt.trim()}
-            >
-              Create Question
-            </Button>
-          </div>
         </div>
-      </Card>
-    </div>
+        <DialogFooter className="max-md:flex max-md:flex-row max-md:justify-end gap-2">
+          <Button variant="ghost" size="sm" onClick={onClose} className="max-md:text-xs max-md:h-8">Cancel</Button>
+          <Button size="sm" onClick={handleConfirm} disabled={!prompt.trim()} className="bg-primary text-primary-foreground max-md:text-xs max-md:h-8">
+            <Check className="h-4 w-4 mr-1 max-md:h-3 max-md:w-3"/> Create
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 
