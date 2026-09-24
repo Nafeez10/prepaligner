@@ -16,7 +16,7 @@ interface Props {
 const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
   const { id } = useParams<{ id: string }>();
   const { mutate, mutateStatus, setOptimisticGenerating } = useKit(id);
-  
+
   const { mutate: updateCompanyBrief, isSaving } = useDebouncedMutation({
     mutationFn: (company_brief: any) => KitsAPI.updateCompanyBrief(id!, company_brief),
     onMutate: (newBrief) => {
@@ -75,7 +75,7 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Company Info */}
         <Card className="bg-card border-border/15 shadow-sm">
           <CardHeader>
@@ -86,8 +86,8 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
               </div>
               <div className="flex items-center gap-2 w-full sm:w-auto mt-1 sm:mt-0">
                 {isSaving && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
-                <button 
-                  onClick={handleRegenerate} 
+                <button
+                  onClick={handleRegenerate}
                   disabled={isRegenerating}
                   className="text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground px-3 py-1.5 rounded transition-colors flex items-center justify-center gap-1 w-full sm:w-auto border border-border/10"
                 >
@@ -100,7 +100,7 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
           <CardContent className="space-y-4 text-sm">
             <div>
               <h4 className="font-semibold text-muted-foreground mb-1">Summary</h4>
-              <textarea 
+              <textarea
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y min-h-[120px] leading-relaxed transition-colors"
                 value={summary}
                 disabled={isRegenerating}
@@ -109,14 +109,14 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
             </div>
             <div>
               <h4 className="font-semibold text-muted-foreground mb-1">What They Do</h4>
-              <textarea 
+              <textarea
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-y min-h-[120px] leading-relaxed transition-colors"
                 value={whatTheyDo}
                 disabled={isRegenerating}
                 onChange={(e) => handleChange('what_they_do', e.target.value)}
               />
             </div>
-            
+
             <div className="pt-4 border-t border-border/10">
               <h4 className="font-semibold text-muted-foreground mb-2">Sources Researched</h4>
               <ul className="space-y-1">
