@@ -119,21 +119,21 @@ const PracticeMode = () => {
 
   if (isComplete) {
     return (
-      <div className="max-w-2xl mx-auto py-12 px-4 text-center space-y-8 animate-in zoom-in-95 duration-500">
+      <div className="max-w-2xl mx-auto py-12 px-4 max-md:px-0 text-center space-y-8 animate-in zoom-in-95 duration-500">
         <div className="flex justify-center">
-          <div className="h-24 w-24 rounded-full bg-green-500/10 flex items-center justify-center">
-            <CheckCircle2 className="h-12 w-12 text-green-500" />
+          <div className="h-24 w-24 max-md:h-16 max-md:w-16 rounded-full bg-green-500/10 flex items-center justify-center">
+            <CheckCircle2 className="h-12 w-12 max-md:h-10 max-md:w-10 text-green-500" />
           </div>
         </div>
         <div>
-          <h2 className="text-3xl font-bold text-primary tracking-tight">Session Complete!</h2>
-          <p className="text-muted-foreground mt-2 text-lg">You've reviewed all flashcards in this kit.</p>
+          <h2 className="text-3xl max-md:text-xl font-bold text-primary tracking-tight">Session Complete!</h2>
+          <p className="text-muted-foreground mt-2 text-lg max-md:text-sm">You've reviewed all flashcards in this kit.</p>
         </div>
-        <div className="flex justify-center gap-4">
-          <Button variant="outline" onClick={() => navigate(`/kits/${id}`)} className="h-12 px-6">
+        <div className="flex justify-center gap-4 max-md:gap-3">
+          <Button variant="outline" onClick={() => navigate(`/kits/${id}`)} className="max-md:h-fit px-6">
             Return to Kit
           </Button>
-          <Button onClick={() => { setCurrentIndex(0); setSessionStarted(false); }} className="h-12 px-6 gap-2">
+          <Button onClick={() => { setCurrentIndex(0); setSessionStarted(false); }} className="max-md:h-fit px-6 gap-2">
             <RotateCcw className="h-4 w-4" /> Practice Again
           </Button>
         </div>
@@ -145,9 +145,9 @@ const PracticeMode = () => {
   const progress = ((currentIndex) / sessionCards.length) * 100;
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="max-w-4xl mx-auto py-4 sm:py-8 px-0 sm:px-4 space-y-4 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex items-center justify-between">
-        <Button variant="ghost" className="gap-2 text-muted-foreground hover:text-foreground" onClick={() => navigate(`/kits/${id}`)}>
+        <Button variant="ghost" className="!pl-0 gap-2 text-muted-foreground hover:text-foreground" onClick={() => navigate(`/kits/${id}`)}>
           <ChevronLeft className="h-4 w-4" /> Exit Practice
         </Button>
         <div className="text-sm font-medium text-muted-foreground">
@@ -168,33 +168,33 @@ const PracticeMode = () => {
           onClick={() => !isFlipped && setIsFlipped(true)}
         >
           {/* Front of Card */}
-          <div className={`absolute inset-0 flex flex-col justify-center items-center p-8 md:p-12 text-center transition-all duration-300 ${isFlipped ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100 scale-100'}`}>
-            <div className="absolute top-6 left-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-secondary border border-border/10 px-3 py-1 rounded-full">
+          <div className={`absolute inset-0 flex flex-col justify-center items-center p-2 sm:p-8 md:p-12 text-center transition-all duration-300 ${isFlipped ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100 scale-100'}`}>
+            <div className="absolute top-4 left-4 sm:top-6 sm:left-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-secondary border border-border/10 px-3 py-1 rounded-full">
               Question
             </div>
-            <h2 className="text-2xl md:text-3xl font-medium leading-relaxed max-w-2xl text-foreground">
+            <h2 className="text-2xl md:text-3xl max-sm:px-2 font-medium leading-relaxed max-w-2xl text-foreground">
               {currentCard.front}
             </h2>
-            <div className="absolute bottom-8 text-sm text-muted-foreground animate-pulse">
+            <div className="absolute bottom-4 sm:bottom-8 text-sm text-muted-foreground animate-pulse">
               Click anywhere to reveal answer
             </div>
           </div>
 
           {/* Back of Card */}
           <div className={`absolute inset-0 flex flex-col transition-all duration-300 ${!isFlipped ? 'opacity-0 pointer-events-none scale-105' : 'opacity-100 scale-100'}`}>
-            <div className="flex-1 p-8 md:p-12 flex flex-col justify-center items-center text-center overflow-y-auto">
-              <div className="absolute top-6 left-6 text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-500/10 border border-green-500/20 px-3 py-1 rounded-full">
+            <div className="flex-1 p-2 sm:p-8 md:p-12 flex flex-col justify-center items-center text-center overflow-y-auto">
+              <div className="absolute top-4 left-4 sm:top-6 sm:left-6 text-xs font-semibold uppercase tracking-wider text-green-600 bg-green-500/10 border border-green-500/20 px-3 py-1 rounded-full">
                 Answer
               </div>
-              <p className="text-lg md:text-xl font-medium leading-relaxed max-w-2xl text-foreground whitespace-pre-wrap mt-8">
+              <p className="text-lg md:text-xl max-sm:px-2 font-medium leading-relaxed max-w-2xl text-foreground whitespace-pre-wrap mt-8">
                 {currentCard.back}
               </p>
             </div>
 
             {/* Rating Actions */}
-            <div className="p-6 border-t border-border/15 bg-secondary/30">
-              <p className="text-center text-sm font-medium text-muted-foreground mb-4">How well did you know this?</p>
-              <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
+            <div className="p-2 sm:p-6 border-t border-border/15 bg-secondary/30 flex-shrink-0">
+              <p className="text-center text-xs sm:text-sm font-medium text-muted-foreground mb-3 sm:mb-4">How well did you know this?</p>
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-lg mx-auto">
                 <Button
                   variant="outline"
                   className="h-14 border-red-500/20 hover:bg-red-500/10 hover:text-red-600 text-red-500 flex flex-col gap-1"

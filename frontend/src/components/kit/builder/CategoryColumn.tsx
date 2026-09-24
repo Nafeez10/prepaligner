@@ -21,7 +21,7 @@ const CategoryColumn = ({ categoryId, items, onAdd, onUpdate, onDelete, onToggle
   const { setNodeRef } = useDroppable({ id: categoryId });
 
   return (
-    <div className="bg-secondary p-6 rounded-xl border border-border/10 space-y-4">
+    <div className="bg-secondary p-6 max-md:p-4 rounded-xl border border-border/10 space-y-4">
       <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between items-start">
         <h2 className="text-lg font-bold capitalize text-primary flex items-center gap-2">
           {categoryId === 'technical' && <Code className="h-5 w-5" />}
@@ -29,13 +29,13 @@ const CategoryColumn = ({ categoryId, items, onAdd, onUpdate, onDelete, onToggle
           {categoryId === 'system-design' && <Brain className="h-5 w-5" />}
           {categoryId.replace('-', ' ')}
         </h2>
-        <div className="flex gap-2 w-full sm:w-auto">
-          <Button variant="outline" size="sm" onClick={() => onRegenerate(categoryId)} disabled={isRegenerating} className="w-full sm:w-auto bg-background/50 hover:bg-secondary">
-            {isRegenerating ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Brain className="h-4 w-4 mr-1" />}
-            {isRegenerating ? "Regenerating..." : "Regenerate"}
+        <div className="flex gap-2 max-sm:self-end">
+          <Button variant="outline" size="sm" onClick={() => onRegenerate(categoryId)} disabled={isRegenerating} className="bg-background/50 hover:bg-secondary max-sm:px-2">
+            {isRegenerating ? <Loader2 className="h-4 w-4 sm:mr-1 animate-spin" /> : <Brain className="h-4 w-4 sm:mr-1" />}
+            <span className="max-sm:hidden">{isRegenerating ? "Regenerating..." : "Regenerate"}</span>
           </Button>
-          <Button variant="outline" size="sm" onClick={() => onAdd(categoryId)} disabled={isRegenerating} className="w-full sm:w-auto bg-background/50 hover:bg-secondary">
-            <Plus className="h-4 w-4 mr-1" /> Add
+          <Button variant="outline" size="sm" onClick={() => onAdd(categoryId)} disabled={isRegenerating} className="bg-background/50 hover:bg-secondary max-sm:px-2">
+            <Plus className="h-4 w-4 sm:mr-1" /> <span className="max-sm:hidden">Add</span>
           </Button>
         </div>
       </div>
@@ -44,9 +44,9 @@ const CategoryColumn = ({ categoryId, items, onAdd, onUpdate, onDelete, onToggle
         <SortableContext items={items.map(i => i.id)} strategy={verticalListSortingStrategy}>
           <div className="space-y-3 min-h-[50px]">
             {items.map(q => (
-              <SortableQuestionCard 
-                key={q.id} 
-                question={q} 
+              <SortableQuestionCard
+                key={q.id}
+                question={q}
                 onUpdate={(updates) => onUpdate(q.id, updates)}
                 onDelete={() => onDelete(q.id)}
                 onTogglePin={() => onTogglePin(q.id)}
