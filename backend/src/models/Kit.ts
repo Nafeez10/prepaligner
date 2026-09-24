@@ -25,7 +25,7 @@ const MetadataSchema = new Schema({
 }, { _id: false });
 
 const KitSchema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   title: { type: String, required: true },
   status: { type: String, enum: ['generating', 'completed', 'failed'], default: 'generating' },
   error: { type: String },
@@ -37,5 +37,8 @@ const KitSchema = new Schema({
   kitData: { type: Schema.Types.Mixed }, // Use Mixed for the heavily nested Appendix A schema
   regeneration_states: { type: Schema.Types.Mixed },
 }, { timestamps: true });
+
+// Compound index for optimal fetching of user kits sorted by newest first
+KitSchema.index({ userId: 1, createdAt: -1 });
 
 export const KitModel = mongoose.model<IKitDoc>('Kit', KitSchema);
