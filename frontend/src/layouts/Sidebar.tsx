@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { LogOut, LayoutDashboard, FilePlus2 } from 'lucide-react';
@@ -11,11 +12,19 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import WarningModal from '@/components/ui/warning-modal';
 
 export const Sidebar = () => {
   const { logout, user } = useAuth();
   const location = useLocation();
   const { setOpenMobile } = useSidebar();
+  const [isSignOutModalOpen, setIsSignOutModalOpen] = useState(false);
+
+  const handleSignOut = () => {
+    logout();
+    setOpenMobile(false);
+    setIsSignOutModalOpen(false);
+  };
 
   return (
     <ShadcnSidebar>
@@ -55,13 +64,23 @@ export const Sidebar = () => {
         </div>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={() => { logout(); setOpenMobile(false); }} className="text-destructive hover:text-destructive hover:bg-destructive/10">
+            <SidebarMenuButton onClick={() => setIsSignOutModalOpen(true)} className="text-destructive hover:text-destructive hover:bg-destructive/10">
               <LogOut />
               <span>Sign out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+
+      <WarningModal
+        isOpen={isSignOutModalOpen}
+        onCancel={() => setIsSignOutModalOpen(false)}
+        onConfirm={handleSignOut}
+        title="Sign Out"
+        description="Are you sure you want to sign out?"
+        confirmText="Sign Out"
+        isDestructive
+      />
     </ShadcnSidebar>
   );
 };

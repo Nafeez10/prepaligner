@@ -43,7 +43,7 @@ const Dashboard = () => {
 
       {!kits || kits.length === 0 ? (
         <Card className="glass border-dashed border-2">
-          <CardContent className="flex flex-col items-center justify-center h-64 text-center">
+          <CardContent className="flex flex-col items-center justify-center h-fit p-5 text-center">
             <FilePlus2 className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-xl font-semibold mb-2">No kits generated yet</h3>
             <p className="text-muted-foreground mb-6 max-w-sm">
@@ -57,10 +57,10 @@ const Dashboard = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {kits.map((kit: KitSummary) => (
-            <KitCard 
-              key={kit._id} 
-              kit={kit} 
-              onDeleteSuccess={() => mutate()} 
+            <KitCard
+              key={kit._id}
+              kit={kit}
+              onDeleteSuccess={() => mutate()}
               onStatusChange={() => mutate()}
             />
           ))}

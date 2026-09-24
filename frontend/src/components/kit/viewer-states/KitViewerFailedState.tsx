@@ -1,5 +1,6 @@
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Link } from 'react-router-dom';
 import { Dispatch, SetStateAction } from 'react';
 import { useLLMProviders } from '@/api/routes/LLMAPI';
@@ -37,16 +38,18 @@ const KitViewerFailedState = ({
       </div>
       
       <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-sm mt-4">
-        <select
-          value={retryProvider}
-          onChange={(e) => setRetryProvider(e.target.value)}
-          className="flex h-10 w-full rounded-md border border-input bg-background/50 px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={isRetrying || isLoading}
-        >
-          {providers.map((p) => (
-            <option key={p.id} value={p.id}>{p.name}</option>
-          ))}
-        </select>
+        <Select disabled={isRetrying || isLoading} value={retryProvider} onValueChange={setRetryProvider}>
+          <SelectTrigger className="w-full bg-background/50">
+            <SelectValue placeholder="Select a provider" />
+          </SelectTrigger>
+          <SelectContent>
+            {providers.map((p) => (
+              <SelectItem key={p.id} value={p.id}>
+                {p.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <Button 
           className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap w-full sm:w-auto" 
           onClick={onRetry}

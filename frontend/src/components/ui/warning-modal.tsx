@@ -1,6 +1,14 @@
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { AlertCircle, X } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface WarningModalProps {
   isOpen: boolean;
@@ -13,61 +21,47 @@ interface WarningModalProps {
   isDestructive?: boolean;
 }
 
-const WarningModal = ({ 
-  isOpen, 
-  title, 
-  description, 
-  onConfirm, 
-  onCancel, 
-  confirmText = "Confirm", 
+const WarningModal = ({
+  isOpen,
+  title,
+  description,
+  onConfirm,
+  onCancel,
+  confirmText = "Confirm",
   cancelText = "Cancel",
   isDestructive = true
 }: WarningModalProps) => {
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <Card className="bg-card border-border/15 shadow-sm w-full max-w-md border-destructive/50 relative overflow-hidden">
-        {/* Top accent bar */}
-        <div className={`h-1 w-full absolute top-0 left-0 ${isDestructive ? 'bg-destructive' : 'bg-primary'}`} />
-        
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="absolute top-3 right-3 text-muted-foreground hover:text-foreground" 
-          onClick={onCancel}
-        >
-          <X className="h-4 w-4" />
-        </Button>
-        
-        <div className="p-6 flex flex-col items-center text-center gap-4 mt-2">
-          <div className={`p-4 rounded-full ${isDestructive ? 'bg-destructive/10 text-destructive' : 'bg-primary/10 text-primary'}`}>
-            <AlertCircle className="h-10 w-10" />
+    <AlertDialog open={isOpen} onOpenChange={(open) => { if (!open) onCancel() }}>
+      <AlertDialogContent className="sm:max-w-md rounded-xl border border-border/60 shadow-xl p-0 gap-0 overflow-hidden">
+        <AlertDialogHeader className="p-3 border-b border-border/30 flex flex-row items-center gap-3 space-y-0 text-left">
+          <div className={`p-2 rounded-full ${isDestructive ? 'bg-destructive/20 text-destructive' : 'bg-primary/20 text-primary'}`}>
+            <AlertCircle className="h-5 w-5" />
           </div>
-          
-          <div>
-            <h3 className="text-xl font-bold mb-2">
-              {title}
-            </h3>
-            <p className="text-muted-foreground text-sm">
-              {description}
-            </p>
-          </div>
-          
-          <div className="flex gap-3 mt-4 w-full justify-center">
-            <Button variant="ghost" className="w-full" onClick={onCancel}>
-              {cancelText}
-            </Button>
-            <Button 
-              className={`w-full ${isDestructive ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground' : 'bg-primary hover:bg-primary/90'}`}
-              onClick={onConfirm}
-            >
-              {confirmText}
-            </Button>
-          </div>
+          <AlertDialogTitle className="text-xl font-semibold tracking-tight">
+            {title}
+          </AlertDialogTitle>
+        </AlertDialogHeader>
+
+        <div className="p-3 py-3">
+          <AlertDialogDescription className="text-base text-foreground/90 text-left">
+            {description}
+          </AlertDialogDescription>
         </div>
-      </Card>
-    </div>
+
+        <AlertDialogFooter className="p-3 pt-2 w-full flex sm:flex-row flex-col sm:justify-end gap-3 sm:space-x-0">
+          <AlertDialogCancel onClick={onCancel} className="mt-0 w-full sm:w-auto h-8 px-3 text-xs">
+            {cancelText}
+          </AlertDialogCancel>
+          <AlertDialogAction
+            onClick={onConfirm}
+            className={`w-full sm:w-auto h-8 px-3 text-xs ${isDestructive ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-primary hover:bg-primary/90 text-primary-foreground'}`}
+          >
+            {confirmText}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 

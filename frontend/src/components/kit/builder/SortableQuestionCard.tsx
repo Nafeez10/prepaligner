@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem, AccordionContent } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ChevronDown, ChevronUp, Pin, PinOff, GripVertical, Edit2, Trash2, Check } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -61,15 +62,19 @@ const SortableQuestionCard = ({ question, onUpdate, onDelete, onTogglePin }: Sor
             placeholder="Answer outline" 
           />
           <div className="flex items-center justify-between">
-            <select 
-              value={difficulty} 
-              onChange={e => setDifficulty(Number(e.target.value) as 1 | 2 | 3)} 
-              className="bg-background/50 rounded p-1 text-sm border-none focus:ring-1 focus:ring-primary"
+            <Select 
+              value={difficulty.toString()} 
+              onValueChange={v => setDifficulty(Number(v) as 1 | 2 | 3)}
             >
-              <option value={1}>Level 1 (Easy)</option>
-              <option value={2}>Level 2 (Medium)</option>
-              <option value={3}>Level 3 (Hard)</option>
-            </select>
+              <SelectTrigger className="w-[180px] bg-background/50">
+                <SelectValue placeholder="Select difficulty" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">Level 1 (Easy)</SelectItem>
+                <SelectItem value="2">Level 2 (Medium)</SelectItem>
+                <SelectItem value="3">Level 3 (Hard)</SelectItem>
+              </SelectContent>
+            </Select>
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" onClick={() => setIsEditing(false)}>Cancel</Button>
               <Button size="sm" onClick={handleSave} className="bg-primary text-primary-foreground">

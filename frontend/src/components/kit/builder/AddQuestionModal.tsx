@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { X } from 'lucide-react';
 import { ManagedQuestion } from '@/types/kit';
 
@@ -79,15 +80,19 @@ const AddQuestionModal = ({ isOpen, category, onClose, onConfirm }: AddQuestionM
           
           <div className="space-y-1">
             <label className="text-sm font-medium text-muted-foreground">Difficulty Level</label>
-            <select 
-              value={difficulty} 
-              onChange={e => setDifficulty(Number(e.target.value) as 1 | 2 | 3)} 
-              className="w-full bg-background/50 rounded-md p-3 text-sm border-none focus:ring-1 focus:ring-primary"
+            <Select 
+              value={difficulty.toString()} 
+              onValueChange={v => setDifficulty(Number(v) as 1 | 2 | 3)}
             >
-              <option value={1}>Level 1 (Easy)</option>
-              <option value={2}>Level 2 (Medium)</option>
-              <option value={3}>Level 3 (Hard)</option>
-            </select>
+              <SelectTrigger className="w-full bg-background/50">
+                <SelectValue placeholder="Select difficulty" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">Level 1 (Easy)</SelectItem>
+                <SelectItem value="2">Level 2 (Medium)</SelectItem>
+                <SelectItem value="3">Level 3 (Hard)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="flex justify-end gap-3 mt-4">
