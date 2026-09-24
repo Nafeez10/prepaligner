@@ -130,6 +130,163 @@ export class KitController {
     }
   }
 
+  // --- Granular Update Methods ---
+
+  static async updateCompanyBrief(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { company_brief } = req.body;
+      const kit = await KitModel.findOneAndUpdate(
+        { _id: id, userId: req.user.userId },
+        { $set: { 'kitData.company_brief': company_brief } },
+        { new: true }
+      );
+      if (!kit) {
+        res.status(404).json({ error: 'Kit not found' });
+        return;
+      }
+      res.status(200).json({ message: 'Company brief updated', kit });
+    } catch {
+      res.status(500).json({ error: 'Failed to update company brief' });
+    }
+  }
+
+  static async updateRole(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { role } = req.body;
+      const kit = await KitModel.findOneAndUpdate(
+        { _id: id, userId: req.user.userId },
+        { $set: { 'kitData.role': role } },
+        { new: true }
+      );
+      if (!kit) { res.status(404).json({ error: 'Kit not found' }); return; }
+      res.status(200).json({ message: 'Role updated', kit });
+    } catch { res.status(500).json({ error: 'Failed to update role' }); }
+  }
+
+  static async updateQuestionsArray(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { questions } = req.body;
+      const kit = await KitModel.findOneAndUpdate(
+        { _id: id, userId: req.user.userId },
+        { $set: { 'kitData.questions': questions } },
+        { new: true }
+      );
+      if (!kit) { res.status(404).json({ error: 'Kit not found' }); return; }
+      res.status(200).json({ message: 'Questions updated', kit });
+    } catch { res.status(500).json({ error: 'Failed to update questions' }); }
+  }
+
+  static async createQuestion(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { question } = req.body;
+      const kit = await KitModel.findOneAndUpdate(
+        { _id: id, userId: req.user.userId },
+        { $push: { 'kitData.questions': question } },
+        { new: true }
+      );
+      if (!kit) { res.status(404).json({ error: 'Kit not found' }); return; }
+      res.status(201).json({ message: 'Question created', kit });
+    } catch { res.status(500).json({ error: 'Failed to create question' }); }
+  }
+
+  static async updateQuestion(req: Request, res: Response): Promise<void> {
+    try {
+      const { id, questionId } = req.params;
+      const { question } = req.body;
+      
+      const setObj: Record<string, any> = {};
+      for (const key of Object.keys(question)) {
+        setObj[`kitData.questions.$.${key}`] = question[key];
+      }
+
+      const kit = await KitModel.findOneAndUpdate(
+        { _id: id, userId: req.user.userId, 'kitData.questions.id': questionId },
+        { $set: setObj },
+        { new: true }
+      );
+      if (!kit) { res.status(404).json({ error: 'Kit or Question not found' }); return; }
+      res.status(200).json({ message: 'Question updated', kit });
+    } catch { res.status(500).json({ error: 'Failed to update question' }); }
+  }
+
+  static async deleteQuestion(req: Request, res: Response): Promise<void> {
+    try {
+      const { id, questionId } = req.params;
+      const kit = await KitModel.findOneAndUpdate(
+        { _id: id, userId: req.user.userId },
+        { $pull: { 'kitData.questions': { id: questionId } as any } },
+        { new: true }
+      );
+      if (!kit) { res.status(404).json({ error: 'Kit not found' }); return; }
+      res.status(200).json({ message: 'Question deleted', kit });
+    } catch { res.status(500).json({ error: 'Failed to delete question' }); }
+  }
+
+  static async updateFlashcardsArray(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { flashcards } = req.body;
+      const kit = await KitModel.findOneAndUpdate(
+        { _id: id, userId: req.user.userId },
+        { $set: { 'kitData.flashcards': flashcards } },
+        { new: true }
+      );
+      if (!kit) { res.status(404).json({ error: 'Kit not found' }); return; }
+      res.status(200).json({ message: 'Flashcards updated', kit });
+    } catch { res.status(500).json({ error: 'Failed to update flashcards' }); }
+  }
+
+  static async createFlashcard(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { flashcard } = req.body;
+      const kit = await KitModel.findOneAndUpdate(
+        { _id: id, userId: req.user.userId },
+        { $push: { 'kitData.flashcards': flashcard } },
+        { new: true }
+      );
+      if (!kit) { res.status(404).json({ error: 'Kit not found' }); return; }
+      res.status(201).json({ message: 'Flashcard created', kit });
+    } catch { res.status(500).json({ error: 'Failed to create flashcard' }); }
+  }
+
+  static async updateFlashcard(req: Request, res: Response): Promise<void> {
+    try {
+      const { id, flashcardId } = req.params;
+      const { flashcard } = req.body;
+      
+      const setObj: Record<string, any> = {};
+      for (const key of Object.keys(flashcard)) {
+        setObj[`kitData.flashcards.$.${key}`] = flashcard[key];
+      }
+
+      const kit = await KitModel.findOneAndUpdate(
+        { _id: id, userId: req.user.userId, 'kitData.flashcards.id': flashcardId },
+        { $set: setObj },
+        { new: true }
+      );
+      if (!kit) { res.status(404).json({ error: 'Kit or Flashcard not found' }); return; }
+      res.status(200).json({ message: 'Flashcard updated', kit });
+    } catch { res.status(500).json({ error: 'Failed to update flashcard' }); }
+  }
+
+  static async deleteFlashcard(req: Request, res: Response): Promise<void> {
+    try {
+      const { id, flashcardId } = req.params;
+      const kit = await KitModel.findOneAndUpdate(
+        { _id: id, userId: req.user.userId },
+        { $pull: { 'kitData.flashcards': { id: flashcardId } as any } },
+        { new: true }
+      );
+      if (!kit) { res.status(404).json({ error: 'Kit not found' }); return; }
+      res.status(200).json({ message: 'Flashcard deleted', kit });
+    } catch { res.status(500).json({ error: 'Failed to delete flashcard' }); }
+  }
+
   static async deleteKit(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user.userId;

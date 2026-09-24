@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExternalLink, Building2, Target, Loader2 } from 'lucide-react';
-import { useDebounceSave } from '@/hooks/useDebounceSave';
+import { useDebouncedMutation } from '@/hooks/useDebouncedMutation';
 import { useParams } from 'react-router-dom';
 import { KitsAPI, useKit } from '@/api/routes/KitsAPI';
 import { useState, useEffect } from 'react';
@@ -16,7 +16,26 @@ interface Props {
 const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
   const { id } = useParams<{ id: string }>();
   const { mutate, mutateStatus, setOptimisticGenerating } = useKit(id);
-  const { triggerSave, isSaving } = useDebounceSave(id, mutate);
+  
+  const { mutate: updateCompanyBrief, isSaving } = useDebouncedMutation({
+    mutationFn: (company_brief: any) => KitsAPI.updateCompanyBrief(id!, company_brief),
+    onMutate: (newBrief) => {
+      // Optimistically update local cache
+      mutate((currentData: any) => {
+        if (!currentData) return currentData;
+        return {
+          ...currentData,
+          kitData: {
+            ...currentData.kitData,
+            company_brief: newBrief
+          }
+        };
+      }, { revalidate: false });
+    },
+    onError: () => {
+      mutate(); // revalidate on error
+    }
+  });
 
   const [summary, setSummary] = useState(kitData?.company_brief?.summary || '');
   const [whatTheyDo, setWhatTheyDo] = useState(kitData?.company_brief?.what_they_do || '');
@@ -35,15 +54,11 @@ const CompanyBriefTab = ({ kitData, regenerationStates }: Props) => {
     if (field === 'summary') setSummary(value);
     if (field === 'what_they_do') setWhatTheyDo(value);
 
-    // Build the new kitData
-    const updatedKitData = {
-      ...kitData,
-      company_brief: {
-        ...kitData.company_brief,
-        [field]: value
-      }
+    const updatedBrief = {
+      ...kitData.company_brief,
+      [field]: value
     };
-    triggerSave(updatedKitData);
+    updateCompanyBrief(updatedBrief);
   };
 
   const handleRegenerate = async () => {

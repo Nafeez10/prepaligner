@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { KitsAPI, useKit } from '@/api/routes/KitsAPI';
-import { useDebounceSave } from '@/hooks/useDebounceSave';
+import { useDebouncedMutation } from '@/hooks/useDebouncedMutation';
 import {
   DndContext,
   closestCenter,
@@ -25,7 +25,50 @@ import { RegenerationStates } from '@/api/routes/KitsAPI/types';
 const QuestionsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, regenerationStates?: RegenerationStates }) => {
   const { id } = useParams<{ id: string }>();
   const { mutate, mutateStatus, setOptimisticGenerating } = useKit(id);
-  const { triggerSave, isSaving } = useDebounceSave(id, mutate);
+
+  const { mutate: saveQuestionsOrder, isSaving: isSavingOrder } = useDebouncedMutation({
+    mutationFn: (newItems: ManagedQuestion[]) => KitsAPI.updateQuestionsArray(id!, newItems),
+    onMutate: (newItems) => mutate((prev: any) => prev ? { ...prev, kitData: { ...prev.kitData, questions: newItems } } : prev, { revalidate: false }),
+    onError: () => mutate()
+  });
+
+  const { mutate: saveQuestion, isSaving: isSavingItem } = useDebouncedMutation({
+    mutationFn: ({ qId, q }: { qId: string, q: ManagedQuestion }) => KitsAPI.updateQuestion(id!, qId, q),
+    onMutate: ({ qId, q }) => {
+      mutate((prev: any) => {
+        if (!prev) return prev;
+        const items = prev.kitData.questions.map((item: any) => item.id === qId ? q : item);
+        return { ...prev, kitData: { ...prev.kitData, questions: items } };
+      }, { revalidate: false });
+    },
+    onError: () => mutate()
+  });
+
+  const { mutate: deleteQuestion } = useDebouncedMutation({
+    mutationFn: (qId: string) => KitsAPI.deleteQuestion(id!, qId),
+    onMutate: (qId) => {
+      mutate((prev: any) => {
+        if (!prev) return prev;
+        const items = prev.kitData.questions.filter((item: any) => item.id !== qId);
+        return { ...prev, kitData: { ...prev.kitData, questions: items } };
+      }, { revalidate: false });
+    },
+    onError: () => mutate()
+  });
+
+  const { mutate: createQuestion } = useDebouncedMutation({
+    mutationFn: (q: ManagedQuestion) => KitsAPI.createQuestion(id!, q),
+    onMutate: (q) => {
+      mutate((prev: any) => {
+        if (!prev) return prev;
+        const items = [...prev.kitData.questions, q];
+        return { ...prev, kitData: { ...prev.kitData, questions: items } };
+      }, { revalidate: false });
+    },
+    onError: () => mutate()
+  });
+
+  const isSaving = isSavingOrder || isSavingItem;
   
   const [items, setItems] = useState<ManagedQuestion[]>([]);
   const [addModalCategory, setAddModalCategory] = useState<string | null>(null);
@@ -40,12 +83,6 @@ const QuestionsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, re
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  const saveToBackend = useCallback((newItems: ManagedQuestion[]) => {
-    if (!kitData) return;
-    const updatedKitData = { ...kitData, questions: newItems };
-    triggerSave(updatedKitData);
-  }, [kitData, triggerSave]);
-
   const handleDragOver = useCallback((event: DragOverEvent) => {
     const { active, over } = event;
     if (!over) return;
@@ -58,7 +95,7 @@ const QuestionsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, re
         const activeIndex = prev.findIndex(q => q.id === activeId);
         if (activeIndex > -1 && prev[activeIndex].category !== overId) {
           const newItems = [...prev];
-          newItems[activeIndex] = { ...newItems[activeIndex], category: overId };
+          newItems[activeIndex] = { ...newItems[activeIndex], category: overId as any };
           return newItems;
         }
         return prev;
@@ -81,7 +118,7 @@ const QuestionsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, re
 
       if ((CATEGORIES as readonly string[]).includes(overId)) {
         if (newItems[activeIndex].category !== overId) {
-          newItems[activeIndex] = { ...newItems[activeIndex], category: overId };
+          newItems[activeIndex] = { ...newItems[activeIndex], category: overId as any };
         }
       } else if (activeId !== overId) {
         const overIndex = newItems.findIndex(q => q.id === overId);
@@ -93,34 +130,43 @@ const QuestionsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, re
         }
       }
       
-      saveToBackend(newItems);
+      saveQuestionsOrder(newItems);
       return newItems;
     });
-  }, [saveToBackend]);
+  }, [saveQuestionsOrder]);
 
   const handleUpdate = useCallback((qId: string, updates: Partial<ManagedQuestion>) => {
     setItems(prev => {
-      const newItems = prev.map(q => q.id === qId ? { ...q, ...updates, metadata: { ...q.metadata, is_edited: true } } : q);
-      saveToBackend(newItems);
+      const newItems = prev.map(q => {
+        if (q.id === qId) {
+          const updatedQ = { ...q, ...updates, metadata: { ...q.metadata, is_edited: true } };
+          saveQuestion({ qId, q: updatedQ });
+          return updatedQ;
+        }
+        return q;
+      });
       return newItems;
     });
-  }, [saveToBackend]);
+  }, [saveQuestion]);
 
   const handleDelete = useCallback((qId: string) => {
-    setItems(prev => {
-      const newItems = prev.filter(q => q.id !== qId);
-      saveToBackend(newItems);
-      return newItems;
-    });
-  }, [saveToBackend]);
+    setItems(prev => prev.filter(q => q.id !== qId));
+    deleteQuestion(qId);
+  }, [deleteQuestion]);
 
   const handleTogglePin = useCallback((qId: string) => {
     setItems(prev => {
-      const newItems = prev.map(q => q.id === qId ? { ...q, metadata: { ...q.metadata, is_pinned: !q.metadata?.is_pinned } } : q);
-      saveToBackend(newItems);
+      const newItems = prev.map(q => {
+        if (q.id === qId) {
+          const updatedQ = { ...q, metadata: { ...q.metadata, is_pinned: !q.metadata?.is_pinned } };
+          saveQuestion({ qId, q: updatedQ });
+          return updatedQ;
+        }
+        return q;
+      });
       return newItems;
     });
-  }, [saveToBackend]);
+  }, [saveQuestion]);
 
   const confirmAdd = useCallback((newQuestion: Omit<ManagedQuestion, 'id'>) => {
     const newQ: ManagedQuestion = {
@@ -128,13 +174,10 @@ const QuestionsTab = ({ kitData, regenerationStates }: { kitData: ManagedKit, re
       id: `q_manual_${Date.now()}`
     };
     
-    setItems(prev => {
-      const newItems = [...prev, newQ];
-      saveToBackend(newItems);
-      return newItems;
-    });
+    setItems(prev => [...prev, newQ]);
+    createQuestion(newQ);
     setAddModalCategory(null);
-  }, [saveToBackend]);
+  }, [createQuestion]);
 
   const handleRegenerateCategory = async (category: string) => {
     if (!id) return;

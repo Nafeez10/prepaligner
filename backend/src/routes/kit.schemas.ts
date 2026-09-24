@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { KitSchema, QuestionSchema, FlashcardSchema } from '../types/schemas';
 
 export const CreateKitSchema = z.object({
   company_url: z.string().url('company_url must be a valid URL'),
@@ -29,4 +30,37 @@ export const RegenerateSectionSchema = z.object({
       study_days: z.number().optional(),
     })
     .optional(),
+});
+
+// Granular Update Schemas
+export const UpdateCompanyBriefSchema = z.object({
+  company_brief: KitSchema.shape.company_brief.partial(),
+});
+
+export const UpdateRoleSchema = z.object({
+  role: KitSchema.shape.role.partial(),
+});
+
+export const CreateQuestionSchema = z.object({
+  question: QuestionSchema,
+});
+
+export const UpdateQuestionSchema = z.object({
+  question: QuestionSchema.partial(),
+});
+
+export const UpdateQuestionsArraySchema = z.object({
+  questions: z.array(QuestionSchema),
+});
+
+export const CreateFlashcardSchema = z.object({
+  flashcard: FlashcardSchema,
+});
+
+export const UpdateFlashcardSchema = z.object({
+  flashcard: FlashcardSchema.partial(),
+});
+
+export const UpdateFlashcardsArraySchema = z.object({
+  flashcards: z.array(FlashcardSchema),
 });

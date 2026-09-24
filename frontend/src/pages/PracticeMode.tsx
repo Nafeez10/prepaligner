@@ -80,16 +80,18 @@ const PracticeMode = () => {
     const currentCard = sessionCards[currentIndex];
 
     // Update local state
+    const updatedCard = {
+      ...currentCard,
+      metadata: {
+        ...currentCard.metadata,
+        confidence: confidenceScore,
+        last_reviewed: new Date().toISOString()
+      }
+    };
+
     const updatedCards = kit.kitData.flashcards.map((fc: ManagedFlashcard) => {
       if (fc.id === currentCard.id) {
-        return {
-          ...fc,
-          metadata: {
-            ...fc.metadata,
-            confidence: confidenceScore,
-            last_reviewed: new Date().toISOString()
-          }
-        };
+        return updatedCard;
       }
       return fc;
     });
@@ -101,7 +103,7 @@ const PracticeMode = () => {
       mutate({ ...kit, kitData: updatedKitData }, false);
 
       // We don't await this so the user can move to the next card instantly
-      KitsAPI.updateKitData(id, updatedKitData);
+      KitsAPI.updateFlashcard(id, currentCard.id, updatedCard);
 
       setIsFlipped(false);
       setCurrentIndex(prev => prev + 1);
