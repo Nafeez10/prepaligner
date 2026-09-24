@@ -2,6 +2,7 @@ import { Outlet, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Sidebar } from './Sidebar';
+import { Spinner } from '@/components/ui/spinner';
 
 const DashboardLayout = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -9,7 +10,7 @@ const DashboardLayout = () => {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <Spinner size="lg" />
       </div>
     );
   }

@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FilePlus2, Sparkles, AlertCircle } from 'lucide-react';
 import KitCard from '@/components/kit/cards/KitCard';
+import { Spinner } from '@/components/ui/spinner';
 
 const Dashboard = () => {
   const { kits, error, isLoading, mutate } = useKits();
@@ -12,7 +13,7 @@ const Dashboard = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <Spinner size="lg" />
       </div>
     );
   }
