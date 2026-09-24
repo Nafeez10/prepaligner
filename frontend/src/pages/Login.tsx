@@ -4,7 +4,10 @@ import { AuthAPI } from '@/api/routes/AuthAPI';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
 import { Label } from '@/components/ui/label';
+import { useColdStartWarning } from '@/hooks/useColdStartWarning';
+import { ColdStartToast } from '@/components/ui/cold-start-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,11 +16,13 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { showWarning, startWarningTimer, stopWarningTimer } = useColdStartWarning(3000);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+    startWarningTimer();
     
     try {
       const response = await AuthAPI.login({ email, password });
@@ -26,6 +31,7 @@ const Login = () => {
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to login');
     } finally {
+      stopWarningTimer();
       setLoading(false);
     }
   };
@@ -55,9 +61,7 @@ const Login = () => {
           <div className="flex items-center justify-between">
             <Label htmlFor="password">Password</Label>
           </div>
-          <Input 
-            id="password" 
-            type="password" 
+          <PasswordInput 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required 
@@ -77,6 +81,8 @@ const Login = () => {
           Sign up
         </Link>
       </div>
+
+      <ColdStartToast visible={showWarning} />
     </div>
   );
 };

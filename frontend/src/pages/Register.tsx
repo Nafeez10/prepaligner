@@ -4,7 +4,10 @@ import { AuthAPI } from '@/api/routes/AuthAPI';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
 import { Label } from '@/components/ui/label';
+import { useColdStartWarning } from '@/hooks/useColdStartWarning';
+import { ColdStartToast } from '@/components/ui/cold-start-toast';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +17,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { showWarning, startWarningTimer, stopWarningTimer } = useColdStartWarning(3000);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +28,7 @@ const Register = () => {
     }
     
     setLoading(true);
+    startWarningTimer();
     
     try {
       const response = await AuthAPI.register({ email, password });
@@ -32,6 +37,7 @@ const Register = () => {
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to register');
     } finally {
+      stopWarningTimer();
       setLoading(false);
     }
   };
@@ -59,9 +65,7 @@ const Register = () => {
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
-          <Input 
-            id="password" 
-            type="password" 
+          <PasswordInput 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required 
@@ -69,9 +73,7 @@ const Register = () => {
         </div>
         <div className="space-y-2">
           <Label htmlFor="confirm-password">Confirm Password</Label>
-          <Input 
-            id="confirm-password" 
-            type="password" 
+          <PasswordInput 
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required 
@@ -91,6 +93,8 @@ const Register = () => {
           Sign in
         </Link>
       </div>
+
+      <ColdStartToast visible={showWarning} />
     </div>
   );
 };

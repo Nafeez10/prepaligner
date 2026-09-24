@@ -1,6 +1,6 @@
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Spinner } from '@/components/ui/spinner';
+import { AuthSpinner } from '@/components/ui/auth-spinner';
 import { AnimatedUnderline } from '@/components/ui/animated-underline';
 
 const AuthLayout = () => {
@@ -9,7 +9,7 @@ const AuthLayout = () => {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <Spinner size="lg" />
+        <AuthSpinner />
       </div>
     );
   }
