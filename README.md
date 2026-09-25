@@ -6,6 +6,18 @@ Full-Stack Engineering Assessment implementation.
 
 This application turns a job description and company URL into a tailored interview preparation kit. It crawls the company site, researches the interview process online, and uses Google Gemini to generate a complete study kit with a company brief, a categorized question bank, flashcards, and a day-by-day study schedule.
 
+### Deployed Environments
+
+- **Frontend**: Hosted on Firebase Hosting (`https://prepaligner.web.app`)
+- **Backend**: Hosted on Render 
+- **Database**: Hosted on MongoDB Atlas
+*(Environment variables are securely injected in the hosting platforms).*
+
+#### Test Credentials
+To quickly test the deployed application without registering a new account, you can use the following credentials:
+- **Email**: `mohamednafees1613@gmail.com`
+- **Password**: `1234567890`
+
 ### Tech Stack & Justification
 
 - **Frontend**: React + TypeScript + Vite + Tailwind CSS + shadcn/ui. 
@@ -48,16 +60,7 @@ npm run evaluate -- --input cases.json --output kits.json
 ```
 *(This command internally forwards to the backend pipeline and runs the evaluation headless from a clean clone).*
 
-### Deployed Environments
 
-- **Frontend**: Hosted on Firebase Hosting (`https://prepaligner.web.app`)
-- **Backend**: Hosted on Render 
-*(Environment variables are securely injected in both hosting platforms).*
-
-#### Test Credentials
-To quickly test the deployed application without registering a new account, you can use the following credentials:
-- **Email**: `mohamednafees1613@gmail.com`
-- **Password**: `1234567890`
 
 ## LLM Providers and Models
 
