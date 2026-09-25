@@ -54,6 +54,11 @@ npm run evaluate -- --input cases.json --output kits.json
 - **Backend**: Hosted on Render 
 *(Environment variables are securely injected in both hosting platforms).*
 
+#### Test Credentials
+To quickly test the deployed application without registering a new account, you can use the following credentials:
+- **Email**: `mohamednafees1613@gmail.com`
+- **Password**: `1234567890`
+
 ## LLM Providers and Models
 
 We implemented a robust `LLMProviderFactory` allowing the system to use and switch between multiple providers:
